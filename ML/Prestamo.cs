@@ -18,10 +18,7 @@ namespace ML
         public string FechaEntrega { get; set; }
 
         public bool Estatus { get; set; }
-
-
-        //falta aspnetusers id propiedad de navegacion
-
+        public ML.Usuario Usuario { get; set; }
 
     }
 }

@@ -271,7 +271,7 @@ namespace BL
             {
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.IdMedio}' , '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"AddMedio {medio.IdMedio} , '{medio.Titulo}', {medio.TipoMedio.IdTipoMedio} , {medio.Editorial.IdEditorial}  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , {medio.NumPaginas} , {medio.Idioma.IdIdioma} , {medio.Genero.IdGenero} , {medio.Autor.IdAutor} , '{medio.Descripcion}' , '{medio.Imagen}'  ");
 
                     if (query != null)
                     {
