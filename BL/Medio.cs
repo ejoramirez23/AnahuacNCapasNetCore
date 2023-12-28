@@ -14,23 +14,19 @@ namespace BL
         {
             ML.Result result = new ML.Result();
 
-
-
             try
             {
-
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-
                     var medioLINQ = (from queryLINQ in context.Medios
                                      join tipoMedioLINQ in context.TipoMedios
                                      on queryLINQ.IdTipoMedio equals tipoMedioLINQ.IdTipoMedio
                                      join editorialLINQ in context.Editorials
                                      on queryLINQ.IdEditorial equals editorialLINQ.IdEditorial
-                                     join idiomaLINQ in context.Idiomas
-                                     on queryLINQ.IdIdioma equals idiomaLINQ.IdIdioma
+                                     join idIdiomaLINQ in context.Idiomas
+                                     on queryLINQ.IdIdioma equals idIdiomaLINQ.IdIdioma
                                      join generoLINQ in context.Generos
-                                     on queryLINQ.IdGenero equals idiomaLINQ.IdGenero
+                                     on queryLINQ.IdGenero equals generoLINQ.IdGenero
                                      join autorLINQ in context.Autors
                                      on queryLINQ.IdAutor equals autorLINQ.IdAutor
                                      select new
@@ -38,14 +34,14 @@ namespace BL
                                          IdMedio = queryLINQ.IdMedio,
                                          Titulo = queryLINQ.Titulo,
                                          IdTipoMedio = tipoMedioLINQ.IdTipoMedio,
-                                         NombreTM = tipoMedioLINQ.NombreTM,
+                                         NombreTM = tipoMedioLINQ.NombreTm,
                                          IdEditorial = editorialLINQ.IdEditorial,
                                          NombreEdit = editorialLINQ.NombreEdit,
                                          AñoLanzamiento = queryLINQ.AñoLanzamiento,
-                                         Duración = queryLINQ.Duración,
+                                         Duración = queryLINQ.Duracion,
                                          NumPaginas = queryLINQ.NumPaginas,
-                                         IdIdioma = idiomaLINQ.IdIdioma,
-                                         NombreIdioma = idiomaLINQ.NombreIdioma,
+                                         IdIdioma = idIdiomaLINQ.IdIdioma,
+                                         NombreIdioma = idIdiomaLINQ.NombreIdioma,
                                          IdGenero = generoLINQ.IdGenero,
                                          NombreGenero = generoLINQ.NombreGenero,
                                          IdAutor = autorLINQ.IdAutor,
@@ -55,8 +51,6 @@ namespace BL
                                          Descripcion = queryLINQ.Descripcion,
                                          Imagen = queryLINQ.Imagen
                                      }).ToList();
-
-
 
                     result.Objects = new List<Object>();
 
@@ -75,7 +69,7 @@ namespace BL
                             medio.Editorial.IdEditorial = int.Parse(item.IdEditorial.ToString());
                             medio.Editorial.NombreEdit = item.NombreEdit;
                             medio.AñoLanzamiento = item.AñoLanzamiento == null ? "" : item.AñoLanzamiento.Value.Date.ToString("dd/MM/yyyy");
-                            medio.Duración = item.Duración;
+                            medio.Duracion = item.Duración;
                             medio.NumPaginas = int.Parse(item.NumPaginas.ToString());
                             medio.Idioma = new ML.Idioma();
                             medio.Idioma.IdIdioma = int.Parse(item.IdIdioma.ToString());
@@ -138,7 +132,7 @@ namespace BL
                                      join idiomaLINQ in context.Idiomas
                                      on queryLINQ.IdIdioma equals idiomaLINQ.IdIdioma
                                      join generoLINQ in context.Generos
-                                     on queryLINQ.IdGenero equals idiomaLINQ.IdGenero
+                                     on queryLINQ.IdGenero equals generoLINQ.IdGenero
                                      join autorLINQ in context.Autors
                                      on queryLINQ.IdAutor equals autorLINQ.IdAutor
                                      where queryLINQ.IdMedio == idMedio
@@ -147,11 +141,11 @@ namespace BL
                                          IdMedio = queryLINQ.IdMedio,
                                          Titulo = queryLINQ.Titulo,
                                          IdTipoMedio = tipoMedioLINQ.IdTipoMedio,
-                                         NombreTM = tipoMedioLINQ.NombreTM,
+                                         NombreTM = tipoMedioLINQ.NombreTm,
                                          IdEditorial = editorialLINQ.IdEditorial,
                                          NombreEdit = editorialLINQ.NombreEdit,
                                          AñoLanzamiento = queryLINQ.AñoLanzamiento,
-                                         Duración = queryLINQ.Duración,
+                                         Duración = queryLINQ.Duracion,
                                          NumPaginas = queryLINQ.NumPaginas,
                                          IdIdioma = idiomaLINQ.IdIdioma,
                                          NombreIdioma = idiomaLINQ.NombreIdioma,
@@ -184,7 +178,7 @@ namespace BL
                         medio.Editorial.IdEditorial = int.Parse(item.IdEditorial.ToString());
                         medio.Editorial.NombreEdit = item.NombreEdit;
                         medio.AñoLanzamiento = item.AñoLanzamiento == null ? "" : item.AñoLanzamiento.Value.Date.ToString("dd/MM/yyyy");
-                        medio.Duración = item.Duración;
+                        medio.Duracion = item.Duración;
                         medio.NumPaginas = int.Parse(item.NumPaginas.ToString());
                         medio.Idioma = new ML.Idioma();
                         medio.Idioma.IdIdioma = int.Parse(item.IdIdioma.ToString());
@@ -211,7 +205,8 @@ namespace BL
 
                 }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 result.Correct = false;
                 result.Ex = ex;
@@ -228,7 +223,7 @@ namespace BL
 
 
 
-       
+
 
         public static ML.Result Add(ML.Medio medio)
         {
@@ -240,7 +235,7 @@ namespace BL
 
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duración}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
 
                     if (query != null)
                     {
@@ -278,7 +273,7 @@ namespace BL
 
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.IdMedio}' , '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duración}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.IdMedio}' , '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
 
                     if (query != null)
                     {
@@ -318,7 +313,7 @@ namespace BL
 
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.IdMedio}' , '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duración}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{idMedio}' ");
 
                     if (query != null)
                     {

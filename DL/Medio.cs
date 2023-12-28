@@ -15,7 +15,7 @@ public partial class Medio
 
     public DateTime? AñoLanzamiento { get; set; }
 
-    public string? Duración { get; set; }
+    public string? Duracion { get; set; }
 
     public int? NumPaginas { get; set; }
 

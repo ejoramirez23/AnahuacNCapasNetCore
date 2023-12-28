@@ -16,7 +16,7 @@ namespace ML
         public ML.Editorial Editorial { get; set; }
 
         public string AñoLanzamiento { get; set; }
-        public string Duración { get; set; }
+        public string Duracion { get; set; }
 
         public int NumPaginas { get; set; }
 
