@@ -267,10 +267,8 @@ namespace BL
         {
             ML.Result result = new ML.Result();
 
-
             try
             {
-
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
                     var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.IdMedio}' , '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
@@ -285,7 +283,6 @@ namespace BL
                         result.Message = "Error al actualizar medio";
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -293,27 +290,19 @@ namespace BL
                 result.Ex = ex;
                 result.Message = "ocurrio un error: " + ex.Message;
             }
-
-
             return result;
-
         }
-
-
         // falta checarlo e implementarlo porque se deben eliminar en donde exista ese medio 
-
 
         public static ML.Result Delete(int idMedio)
         {
             ML.Result result = new ML.Result();
 
-
             try
             {
-
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{idMedio}' ");
+                    var query = context.Database.ExecuteSqlRaw($"DeleteMedio '{idMedio}' ");
 
                     if (query != null)
                     {
@@ -322,10 +311,9 @@ namespace BL
                     else
                     {
                         result.Correct = false;
-                        result.Message = "Error al actualizar medio";
+                        result.Message = "Error al eliminar medio";
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -333,17 +321,7 @@ namespace BL
                 result.Ex = ex;
                 result.Message = "ocurrio un error: " + ex.Message;
             }
-
-
             return result;
-
         }
-
-
-
-
-
-
-
     }
 }
