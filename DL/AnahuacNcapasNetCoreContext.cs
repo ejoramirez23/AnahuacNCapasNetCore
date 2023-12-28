@@ -53,7 +53,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.; Database=AnahuacNCapasNetCore; TrustServerCertificate=True; Trusted_Connection=True; User ID=sa; Password=12345674;");
+        => optionsBuilder.UseSqlServer("Server=.; Database=AnahuacNCapasNetCore; TrustServerCertificate=True; Trusted_Connection=True; User ID=sa; Password=pass@word1;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -131,7 +131,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Autor>(entity =>
         {
-            entity.HasKey(e => e.IdAutor).HasName("PK__Autor__DD33B03153D01BF5");
+            entity.HasKey(e => e.IdAutor).HasName("PK__Autor__DD33B0318292AC0D");
 
             entity.ToTable("Autor");
 
@@ -148,7 +148,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Colonium>(entity =>
         {
-            entity.HasKey(e => e.IdColonia).HasName("PK__Colonia__A1580F66B601C019");
+            entity.HasKey(e => e.IdColonia).HasName("PK__Colonia__A1580F668E5E9AA6");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
@@ -156,12 +156,12 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdMunicipioNavigation).WithMany(p => p.Colonia)
                 .HasForeignKey(d => d.IdMunicipio)
-                .HasConstraintName("FK__Colonia__IdMunic__72C60C4A");
+                .HasConstraintName("FK__Colonia__IdMunic__412EB0B6");
         });
 
         modelBuilder.Entity<Direccion>(entity =>
         {
-            entity.HasKey(e => e.IdDireccion).HasName("PK__Direccio__1F8E0C769B2C76FD");
+            entity.HasKey(e => e.IdDireccion).HasName("PK__Direccio__1F8E0C76827CF2E8");
 
             entity.ToTable("Direccion");
 
@@ -178,20 +178,20 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdColoniaNavigation).WithMany(p => p.Direccions)
                 .HasForeignKey(d => d.IdColonia)
-                .HasConstraintName("FK__Direccion__IdCol__7E37BEF6");
+                .HasConstraintName("FK__Direccion__IdCol__440B1D61");
 
             entity.HasOne(d => d.IdEditorialNavigation).WithMany(p => p.Direccions)
                 .HasForeignKey(d => d.IdEditorial)
-                .HasConstraintName("FK__Direccion__IdEdi__00200768");
+                .HasConstraintName("FK__Direccion__IdEdi__45F365D3");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Direccions)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("FK__Direccion__IdUsu__7F2BE32F");
+                .HasConstraintName("FK__Direccion__IdUsu__44FF419A");
         });
 
         modelBuilder.Entity<Editorial>(entity =>
         {
-            entity.HasKey(e => e.IdEditorial).HasName("PK__Editoria__EF83867183C2A04F");
+            entity.HasKey(e => e.IdEditorial).HasName("PK__Editoria__EF838671461DE23F");
 
             entity.ToTable("Editorial");
 
@@ -202,7 +202,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Estado>(entity =>
         {
-            entity.HasKey(e => e.IdEstado).HasName("PK__Estado__FBB0EDC185AB656B");
+            entity.HasKey(e => e.IdEstado).HasName("PK__Estado__FBB0EDC146715B82");
 
             entity.ToTable("Estado");
 
@@ -212,12 +212,12 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdPaisNavigation).WithMany(p => p.Estados)
                 .HasForeignKey(d => d.IdPais)
-                .HasConstraintName("FK__Estado__IdPais__6D0D32F4");
+                .HasConstraintName("FK__Estado__IdPais__3B75D760");
         });
 
         modelBuilder.Entity<Genero>(entity =>
         {
-            entity.HasKey(e => e.IdGenero).HasName("PK__Genero__0F83498873D8A90F");
+            entity.HasKey(e => e.IdGenero).HasName("PK__Genero__0F83498810022441");
 
             entity.ToTable("Genero");
 
@@ -228,7 +228,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Idioma>(entity =>
         {
-            entity.HasKey(e => e.IdIdioma).HasName("PK__Idioma__C867BD36EF96B6E7");
+            entity.HasKey(e => e.IdIdioma).HasName("PK__Idioma__C867BD3609E47B3F");
 
             entity.ToTable("Idioma");
 
@@ -239,7 +239,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Medio>(entity =>
         {
-            entity.HasKey(e => e.IdMedio).HasName("PK__Medio__EF80186041F62311");
+            entity.HasKey(e => e.IdMedio).HasName("PK__Medio__EF8018604A11072D");
 
             entity.ToTable("Medio");
 
@@ -256,29 +256,29 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdAutorNavigation).WithMany(p => p.Medios)
                 .HasForeignKey(d => d.IdAutor)
-                .HasConstraintName("FK__Medio__IdAutor__6477ECF3");
+                .HasConstraintName("FK__Medio__IdAutor__32E0915F");
 
             entity.HasOne(d => d.IdEditorialNavigation).WithMany(p => p.Medios)
                 .HasForeignKey(d => d.IdEditorial)
-                .HasConstraintName("FK__Medio__IdEditori__619B8048");
+                .HasConstraintName("FK__Medio__IdEditori__300424B4");
 
             entity.HasOne(d => d.IdGeneroNavigation).WithMany(p => p.Medios)
                 .HasForeignKey(d => d.IdGenero)
-                .HasConstraintName("FK__Medio__IdGenero__6383C8BA");
+                .HasConstraintName("FK__Medio__IdGenero__31EC6D26");
 
             entity.HasOne(d => d.IdIdiomaNavigation).WithMany(p => p.Medios)
                 .HasForeignKey(d => d.IdIdioma)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Medio__IdIdioma__628FA481");
+                .HasConstraintName("FK__Medio__IdIdioma__30F848ED");
 
             entity.HasOne(d => d.IdTipoMedioNavigation).WithMany(p => p.Medios)
                 .HasForeignKey(d => d.IdTipoMedio)
-                .HasConstraintName("FK__Medio__IdTipoMed__60A75C0F");
+                .HasConstraintName("FK__Medio__IdTipoMed__2F10007B");
         });
 
         modelBuilder.Entity<Municipio>(entity =>
         {
-            entity.HasKey(e => e.IdMunicipio).HasName("PK__Municipi__610059783B401407");
+            entity.HasKey(e => e.IdMunicipio).HasName("PK__Municipi__61005978CF7DB2F9");
 
             entity.ToTable("Municipio");
 
@@ -288,12 +288,12 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdEstadoNavigation).WithMany(p => p.Municipios)
                 .HasForeignKey(d => d.IdEstado)
-                .HasConstraintName("FK__Municipio__IdEst__6FE99F9F");
+                .HasConstraintName("FK__Municipio__IdEst__3E52440B");
         });
 
         modelBuilder.Entity<Pai>(entity =>
         {
-            entity.HasKey(e => e.IdPais).HasName("PK__Pais__FC850A7B42662F12");
+            entity.HasKey(e => e.IdPais).HasName("PK__Pais__FC850A7B4031CCD9");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
@@ -302,7 +302,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
         modelBuilder.Entity<Prestamo>(entity =>
         {
-            entity.HasKey(e => e.IdPrestamo).HasName("PK__Prestamo__6FF194C0E3D80BED");
+            entity.HasKey(e => e.IdPrestamo).HasName("PK__Prestamo__6FF194C0E316157D");
 
             entity.ToTable("Prestamo");
 
@@ -312,16 +312,16 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
 
             entity.HasOne(d => d.IdMedioNavigation).WithMany(p => p.Prestamos)
                 .HasForeignKey(d => d.IdMedio)
-                .HasConstraintName("FK__Prestamo__IdMedi__6754599E");
+                .HasConstraintName("FK__Prestamo__IdMedi__35BCFE0A");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Prestamos)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("FK__Prestamo__IdUsua__68487DD7");
+                .HasConstraintName("FK__Prestamo__IdUsua__36B12243");
         });
 
         modelBuilder.Entity<TipoMedio>(entity =>
         {
-            entity.HasKey(e => e.IdTipoMedio).HasName("PK__TipoMedi__7A9964B2FA4E458C");
+            entity.HasKey(e => e.IdTipoMedio).HasName("PK__TipoMedi__7A9964B243688D91");
 
             entity.ToTable("TipoMedio");
 
