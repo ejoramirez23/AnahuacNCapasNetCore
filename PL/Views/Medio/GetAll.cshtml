@@ -1,12 +1,486 @@
-﻿
+﻿@model ML.Medio
 @{
     ViewData["Title"] = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<div>
-    <h1>Medios</h1>
-    <h3>Esta es la lista de Medios este se modificara y es to se seguira modificando y se modificara mas mas</h3>
+
+<div class="row text-center">
+    <div class="col col-lg-12">
+        <h1>Lista de Medios:</h1>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-lg-3">
+
+        <input type="button" value="Agregar" class="btn btn-success" id="btnModalShow">
+
+    </div>
+</div>
+<br>
+<br>
+
+@if (Model.Medios != null)
+{
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col col-lg-12">
+
+                <table class="table" id="tableMedios">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th>Titulo</th>
+                            <th>Imagen</th>
+                            <th>Autor</th>
+                            <th>Editorial</th>
+                            <th>Año lanzamiento</th>
+                            <th>Duracion/#Paginas</th>
+                            <th>Idioma</th>
+                            <th>Genero</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.Medio medio in Model.Medios)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <button class="btn btn-warning" onclick="openModal(@medio.IdMedio)">Editar</button>
+                                </td>
+                                <td>@medio.Titulo</td>
+                                <td>
+                                        @if (medio.Imagen == null)
+                                        {
+                                        <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" />
+                                        }
+                                        else
+                                        {
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(medio.Imagen)" id="medioImagen" style="width: 100px; height:100px;" />
+                                        }
+                                </td>
+                                <td>@medio.Autor.Nombre @medio.Autor.ApellidoPaterno @medio.Autor.ApellidoMaterno</td>
+                                <td>@medio.Editorial.NombreEdit</td>
+                                <td>@medio.AñoLanzamiento</td>
+                                @if(medio.Duracion == null)
+                                {
+                                    <td>@medio.NumPaginas paginas</td>
+                                }
+                                else
+                                {
+                                    <td>@medio.Duracion  min</td>
+                                }
+                                <td>@medio.Idioma.NombreIdioma</td>
+                                <td>@medio.Genero.NombreGenero</td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-12 alert alert-info">
+                @ViewBag.Message
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="FormAddAndUpdate" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col col-md-6">
+
+                            <input type="number" class="form-control visually-hidden" name="IdMedio" id="IdMedio">
+                          
+                            
+                            <label>Titulo</label>
+                            <input type="text" class="form-control" name="Titulo" id="Titulo">
+
+                            <label>Lanzamiento</label>
+                            <input type="date" class="form-control" name="AñoLanzamiento" id="AñoLanzamiento">
+
+                            <label>Genero</label>
+                            <select type="text" class="form-control" name="Genero" id="Genero">
+                                <option value="0">Selecciona un estado civil</option>
+                                <option value="Soltero">Soltera/o</option>
+                                <option value="Casado">Casada/o</option>
+                            </select>
+
+                            <label>Autor</label>
+                            <select type="text" class="form-control" name="Autor" id="Autor">
+                                <option value="0">Selecciona un estado civil</option>
+                                <option value="Soltero">Soltera/o</option>
+                                <option value="Casado">Casada/o</option>
+                            </select>
+
+                             <label>Editorial</label>
+                            <select type="text" class="form-control" name="Editorial" id="Editorial">
+                                <option value="0">Selecciona un estado civil</option>
+                                <option value="Soltero">Soltera/o</option>
+                                <option value="Casado">Casada/o</option>
+                            </select>
+                          
+
+
+
+                         
+
+                        </div>
+
+                        <div class="col col-md-6">
+
+
+                            <label>Duracion (Solo si el medio es de tipo video)</label>
+                            <input type="number" class="form-control" name="Duracion" id="Duracion">
+
+                            <label>Paginas (Solo si el medio es de tipo libro o revista)</label>
+                            <input type="number" class="form-control" name="NumPaginas" id="NumPaginas">
+
+
+                            <label>Idioma</label>
+                            <select type="text" class="form-control" name="Idioma" id="Idioma">
+                                <option value="0">Selecciona un estado civil</option>
+                                <option value="Soltero">Soltera/o</option>
+                                <option value="Casado">Casada/o</option>
+                            </select>
+
+
+                            <label>
+                                <input type="file" class="form-control" name="medioFoto" id="medioFoto" onchange="PreviewImagen(event)">
+                                Subir Imagen
+                            </label>
+                            
+                            <br>
+
+
+                            <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagenPreview" style="width: 150px; height:150px;" />
+
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+
+
+
+<script type="text/javascript">
+
+    // $(document).ready(function () {
+    //     MedioGetAll();
+    // });
+
+
+    $('#btnModalShow').click(function () {
+        openModal(null);
+    });
+
+
+
+    async function openModal(idMedio) {
+
+        if (idMedio == null) {
+            $("#FormAddAndUpdate").trigger("reset");
+            $("#staticBackdropLabel").text("Agregar dependiente");
+        } else {
+            $("#FormAddAndUpdate").trigger("reset");
+            $("#staticBackdropLabel").text("Actualizar dependiente");
+            medioGetById(idMedio);
+        }
+
+
+        $('#modalForm').modal('show');
+    }
+
+
+
+
+
+
+
+
+    function medioGetById(idMedio) {
+        $.ajax({
+            url: '@Url.Action("MedioGetById")',
+            type: 'POST',
+            dataType: 'json',
+            data: { idMedio },
+            success: function (result) {
+
+                if (result.correct) {
+
+                    $("#IdMedio").val(result.object.idMedio);
+                    $("#Titulo").val(result.object.titulo);
+                    $("#AñoLanzamiento").val(result.object.añoLanzamiento);
+                    $("#Genero").val(result.object.genero.idGenero);
+                    $("#Autor").val(result.object.autor.idAutor);
+                    $("#Editorial").val(result.object.editorial.idEditorial);
+                    $("#Duracion").val(result.object.duracion);
+                    $("#NumPaginas").val(result.object.numPaginas);
+                    $("#Idioma").val(result.object.idioma);
+
+
+                    if (result.object.imagen == null) {
+                        $("#medioImagenPreview").src = "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg";
+                    }else{
+                        $("#medioImagenPreview").src = "data:image/png;base64," + btoa(result.object.imagen);
+                    }
+
+                 
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+
+        });
+    }
+
+
+    // async function dependientesGetAllByNumeroEmpleado() {
+
+    //     let NumeroEmpleado = '@ViewBag.NumeroEmpleado';
+
+    //     $('#tablaDependientes tbody').html(`
+    //                 <tr>
+    //                     <td colspan="7">
+    //                         <div class="d-flex align-items-center">
+    //                             <strong class="text-primary"> Loading...</strong >
+    //                             <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
+    //                         </div>
+    //                     </td>
+    //                 </tr>
+    //                 `);
+
+
+    //     $.ajax({
+    //         url: '@Url.Action("DependientesGetAllByNumeroEmpleado")',
+    //         type: 'POST',
+    //         dataType: 'json',
+    //         data: { NumeroEmpleado },
+    //         success: function (result) {
+
+    //             $('#tablaDependientes tbody').empty();
+
+    //             $.each(result.objects, function (i, dependiente) {
+    //                 let filas = `
+    //                                 <tr>
+    //                                     <td class="text-center">
+    //                                         <button class="btn btn-warning" onclick="openModal(${dependiente.idDependiente})">Editar</button>
+    //                                     </td>
+    //                                     <td> ${dependiente.nombre} ${dependiente.apellidoPaterno} ${dependiente.apellidoMaterno}</td>
+    //                                     <td>apellidoPaterno</td>
+    //                                     <td>${dependiente.fechaNacimiento}</td>
+    //                                     <td>${dependiente.estadoCivil}</td>
+    //                                     <td>${dependiente.genero}</td>
+    //                                     <td>${dependiente.telefono}</td>
+    //                                     <td>${dependiente.dependienteTipo.nombre}</td>
+    //                                     <td class="text-center">
+    //                                             <button class="btn btn-danger">Eliminar</button>
+    //                                     </td>
+    //                                 </tr>
+    //                     `;
+
+    //                 $('#tablaDependientes tbody').append(filas);
+    //             });
+
+    //         },
+    //         error: function (result) {
+
+    //             alert('Error.' + result.message);
+    //         }
+
+    //     });
+    // }
+
+
+
+    $('#saveChanges').click(function () {
+        saveChanges();
+    });
+
+
+
+    function saveChanges() {
+
+        $('#saveChanges').html('<div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>');
+
+        let IdDependiente = Number($("#IdDependiente").val());
+        let Nombre = $("#Nombre").val();
+        let ApellidoPaterno = $("#ApellidoPaterno").val();
+        let ApellidoMaterno = $("#ApellidoMaterno").val();
+        let FechaNacimiento = $("#FechaNacimiento").val();
+        let EstadoCivil = $("#EstadoCivil").val();
+        let Telefono = $("#Telefono").val();
+        let IdDependienteTipo = Number($("#IdDependienteTipo").val());
+        let RFC = $("#RFC").val();
+
+
+        let NumeroEmpleado = $("#NumeroEmpleado").val();
+
+
+
+
+
+        var dependiente = {
+            "idDependiente": IdDependiente,
+            "nombre": Nombre,
+            "apellidoPaterno": ApellidoPaterno,
+            "apellidoMaterno": ApellidoMaterno,
+            "fechaNacimiento": FechaNacimiento,
+            "estadoCivil": EstadoCivil,
+            "telefono": Telefono,
+            "rFC": RFC,
+            "genero": Genero,
+            "numeroEmpleado": NumeroEmpleado,
+            "dependienteTipo": {
+                "idDependienteTipo": IdDependienteTipo,
+                "nombre": ""
+            },
+            "dependientes": [
+                "string"
+            ]
+        }
+
+
+
+        if ($("#IdDependiente").val().trim() == '') {
+
+            // AGREGA
+            $.ajax({
+                url: '@Url.Action("DependienteAdd")',
+                type: 'POST',
+                dataType: 'json',
+                data: { dependiente },
+                success: function (result) {
+
+                    $('#saveChanges').html('Guardar');
+
+                    if (result.correct) {
+                        dependientesGetAllByNumeroEmpleado();
+                        $('#modalForm').modal('hide');
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 1900
+                        });
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.message
+                        });
+                    }
+
+
+                },
+                error: function (result) {
+                    $('#saveChanges').html('Guardar');
+                    alert('Error.' + result.message);
+                }
+
+            });
+
+
+
+
+        } else {
+
+            //ACTUALIZA
+            $.ajax({
+                url: '@Url.Action("DependienteUpdate")',
+                type: 'POST',
+                dataType: 'json',
+                data: { dependiente },
+                success: function (result) {
+
+                    $('#saveChanges').html('Guardar');
+
+                    if (result.correct) {
+                        dependientesGetAllByNumeroEmpleado();
+                        $('#modalForm').modal('hide');
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 1900
+                        });
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.message
+                        });
+                    }
+
+
+                },
+                error: function (result) {
+                    $('#saveChanges').html('Guardar');
+                    alert('Error.' + result.message);
+                }
+
+            });
+
+        }
+
+    }
+
+
+
+
+    function PreviewImagen(event) {
+        var img = document.getElementById('medioImagenPreview');
+        img.src = URL.createObjectURL(event.target.files[0]);
+        img.onload = function () {
+            URL.revokeObjectURL(img.src)
+        }
+
+    }
+
+
+
+
+
+
+
+</script>

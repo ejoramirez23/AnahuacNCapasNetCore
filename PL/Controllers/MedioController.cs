@@ -6,39 +6,34 @@ namespace PL.Controllers
     public class MedioController : Controller
     {
         [HttpGet]
-       public IActionResult GetAll()
-        {
-            return View();
-        }
-
-        public JsonResult MedioGetAll()
+        public IActionResult GetAll()
         {
             ML.Result result = BL.Medio.GetAll();
+            ML.Medio medio = new ML.Medio();
+            medio.TipoMedio = new ML.TipoMedio();
+            medio.Editorial = new ML.Editorial();
+            medio.Idioma = new ML.Idioma();
+            medio.Genero = new ML.Genero();
+            medio.Autor = new ML.Autor();
 
-            return Json(result);
+
+            medio.Medios = new List<object>();
+
+            medio.Medios = result.Objects;
+
+            return View(medio);
         }
+
+
 
         public JsonResult MedioGetById(int idMedio)
         {
+
             ML.Result result = BL.Medio.GetById(idMedio);
 
             return Json(result);
+
         }
 
-        public JsonResult MedioAdd(ML.Medio medio)
-        {
-            ML.Result result = BL.Medio.Add(medio);
-
-            return Json(result);
-        }
-
-
-        public JsonResult MedioUpdate(ML.Medio medio)
-        {
-            ML.Result result = BL.Medio.Update(medio);
-
-            return Json(result);
-        }
-        
     }
 }
