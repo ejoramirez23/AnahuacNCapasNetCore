@@ -31,5 +31,14 @@ namespace PL.Controllers
 
             return Json(result);
         }
+
+
+        public JsonResult MedioUpdate(ML.Medio medio)
+        {
+            ML.Result result = BL.Medio.Update(medio);
+
+            return Json(result);
+        }
+        
     }
 }
