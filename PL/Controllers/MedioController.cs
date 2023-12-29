@@ -11,6 +11,12 @@ namespace PL.Controllers
             return View();
         }
 
+        public JsonResult MedioGetAll()
+        {
+            ML.Result result = BL.Medio.GetAll();
+
+            return Json(result);
+        }
 
         public JsonResult MedioGetById(int idMedio)
         {
