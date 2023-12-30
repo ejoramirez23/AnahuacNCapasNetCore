@@ -145,12 +145,7 @@ else
                                 <option value="Soltero">Soltera/o</option>
                                 <option value="Casado">Casada/o</option>
                             </select>
-                          
-
-
-
                          
-
                         </div>
 
                         <div class="col col-md-6">
@@ -221,16 +216,8 @@ else
             medioGetById(idMedio);
         }
 
-
         $('#modalForm').modal('show');
     }
-
-
-
-
-
-
-
 
     function medioGetById(idMedio) {
         $.ajax({
@@ -258,15 +245,12 @@ else
                     }else{
                         $("#medioImagenPreview").src = "data:image/png;base64," + btoa(result.object.imagen);
                     }
-
-                 
                 }
             },
             error: function (result) {
 
                 alert('Error.' + result.message);
             }
-
         });
     }
 

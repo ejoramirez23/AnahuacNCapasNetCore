@@ -14,5 +14,7 @@ namespace ML
 
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
+
+        public List <object> Autores { get; set; }
     }
 }
