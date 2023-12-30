@@ -30,5 +30,7 @@ namespace ML
 
         public byte[] Imagen { get; set; }
 
+        public List<object> Medios { get; set; }
+
     }
 }

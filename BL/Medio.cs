@@ -38,7 +38,7 @@ namespace BL
                                          IdEditorial = editorialLINQ.IdEditorial,
                                          NombreEdit = editorialLINQ.NombreEdit,
                                          AñoLanzamiento = queryLINQ.AñoLanzamiento,
-                                         Duración = queryLINQ.Duracion,
+                                         Duracion = queryLINQ.Duracion,
                                          NumPaginas = queryLINQ.NumPaginas,
                                          IdIdioma = idIdiomaLINQ.IdIdioma,
                                          NombreIdioma = idIdiomaLINQ.NombreIdioma,
@@ -69,7 +69,7 @@ namespace BL
                             medio.Editorial.IdEditorial = int.Parse(item.IdEditorial.ToString());
                             medio.Editorial.NombreEdit = item.NombreEdit;
                             medio.AñoLanzamiento = item.AñoLanzamiento == null ? "" : item.AñoLanzamiento.Value.Date.ToString("dd/MM/yyyy");
-                            medio.Duracion = item.Duración;
+                            medio.Duracion = item.Duracion;
                             medio.NumPaginas = int.Parse(item.NumPaginas.ToString());
                             medio.Idioma = new ML.Idioma();
                             medio.Idioma.IdIdioma = int.Parse(item.IdIdioma.ToString());
@@ -271,7 +271,7 @@ namespace BL
             {
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio {medio.IdMedio} , '{medio.Titulo}', {medio.TipoMedio.IdTipoMedio} , {medio.Editorial.IdEditorial}  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , {medio.NumPaginas} , {medio.Idioma.IdIdioma} , {medio.Genero.IdGenero} , {medio.Autor.IdAutor} , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"UpdateMedio {medio.IdMedio} , '{medio.Titulo}', {medio.TipoMedio.IdTipoMedio} , {medio.Editorial.IdEditorial}  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , {medio.NumPaginas} , {medio.Idioma.IdIdioma} , {medio.Genero.IdGenero} , {medio.Autor.IdAutor} , '{medio.Descripcion}' , '{medio.Imagen}'  ");
 
                     if (query != null)
                     {
