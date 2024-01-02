@@ -6,6 +6,8 @@
 
 
 
+
+
 <div class="row text-center">
     <div class="col col-lg-12">
         <h1>Lista de Medios:</h1>
@@ -13,8 +15,13 @@
 </div>
 <div class="row text-center">
     <div class="col-lg-3">
-
-        <input type="button" value="Agregar" class="btn btn-success" id="btnModalShow">
+      @*   <form asp-action="Form" method="get" asp-controller="Medio">
+            <input type="submit" value="Agregar" class="btn btn-success"id="btnModalShow" >
+        </form>
+ *@
+        <form asp-action="Form" method="get" asp-controller="Medio">
+            <input type="submit" value="Agregar" class="btn btn-success">
+        </form>
 
     </div>
 </div>
@@ -49,23 +56,26 @@
                         {
                             <tr>
                                 <td class="text-center">
-                                    <button class="btn btn-warning" onclick="openModal(@medio.IdMedio)">Editar</button>
+                                    <form asp-action="Form" method="get" asp-controller="Medio">
+                                        <input type="number" class="form-control visually-hidden" value="@medio.IdMedio" name="IdMedio">
+                                        <input class="btn btn-warning"type="submit" value="Editar" @* onclick="openModal(@medio.IdMedio)" *@>
+                                    </form>
                                 </td>
                                 <td>@medio.Titulo</td>
                                 <td>
-                                        @if (medio.Imagen == null)
-                                        {
+                                    @if (medio.Imagen == null)
+                                    {
                                         <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" />
-                                        }
-                                        else
-                                        {
+                                    }
+                                    else
+                                    {
                                         <img src="data:image/png;base64,@Convert.ToBase64String(medio.Imagen)" id="medioImagen" style="width: 100px; height:100px;" />
-                                        }
+                                    }
                                 </td>
                                 <td>@medio.Autor.Nombre @medio.Autor.ApellidoPaterno @medio.Autor.ApellidoMaterno</td>
                                 <td>@medio.Editorial.NombreEdit</td>
                                 <td>@medio.AñoLanzamiento</td>
-                                @if(medio.Duracion == null)
+                                @if (medio.Duracion == null)
                                 {
                                     <td>@medio.NumPaginas paginas</td>
                                 }
@@ -101,7 +111,7 @@ else
 }
 
 
-
+@* 
 
 <div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -117,8 +127,9 @@ else
                         <div class="col col-md-6">
 
                             <input type="number" class="form-control visually-hidden" name="IdMedio" id="IdMedio">
-                          
-                            
+
+                            <input type="text" class="form-control visually-hidden" name="ImagenB64" id="ImagenB64">
+
                             <label>Titulo</label>
                             <input type="text" class="form-control" name="Titulo" id="Titulo">
 
@@ -139,13 +150,13 @@ else
                                 <option value="Casado">Casada/o</option>
                             </select>
 
-                             <label>Editorial</label>
+                            <label>Editorial</label>
                             <select type="text" class="form-control" name="Editorial" id="Editorial">
                                 <option value="0">Selecciona un estado civil</option>
                                 <option value="Soltero">Soltera/o</option>
                                 <option value="Casado">Casada/o</option>
                             </select>
-                         
+
                         </div>
 
                         <div class="col col-md-6">
@@ -167,16 +178,16 @@ else
 
 
                             <label>
-                                <input type="file" class="form-control" name="medioFoto" id="medioFoto" onchange="PreviewImagen(event)">
+                                <input type="file" class="form-control" name="Imagen" id="Imagen" onchange="PreviewImagen(event)">
                                 Subir Imagen
                             </label>
-                            
+
                             <br>
 
 
                             <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagenPreview" style="width: 150px; height:150px;" />
 
-                           
+
                         </div>
                     </div>
                 </form>
@@ -190,8 +201,10 @@ else
 </div>
 
 
+ *@
 
 
+@* 
 <script type="text/javascript">
 
     // $(document).ready(function () {
@@ -238,11 +251,12 @@ else
                     $("#Duracion").val(result.object.duracion);
                     $("#NumPaginas").val(result.object.numPaginas);
                     $("#Idioma").val(result.object.idioma);
+                    $("#ImagenB64").val(result.object.imagenB64);
 
 
                     if (result.object.imagen == null) {
                         $("#medioImagenPreview").src = "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg";
-                    }else{
+                    } else {
                         $("#medioImagenPreview").src = "data:image/png;base64," + btoa(result.object.imagen);
                     }
                 }
@@ -323,67 +337,65 @@ else
 
         $('#saveChanges').html('<div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>');
 
-        let IdDependiente = Number($("#IdDependiente").val());
-        let Nombre = $("#Nombre").val();
-        let ApellidoPaterno = $("#ApellidoPaterno").val();
-        let ApellidoMaterno = $("#ApellidoMaterno").val();
-        let FechaNacimiento = $("#FechaNacimiento").val();
-        let EstadoCivil = $("#EstadoCivil").val();
-        let Telefono = $("#Telefono").val();
-        let IdDependienteTipo = Number($("#IdDependienteTipo").val());
-        let RFC = $("#RFC").val();
+
+        let IdMedio = $("#IdMedio").val();
+        let Titulo = $("#Titulo").val();
+        let ALanzamiento = $("#AñoLanzamiento").val();
+        let Genero = $("#Genero").val();
+        let Autor = $("#Autor").val();
+        let Editorial = $("#Editorial").val();
+        let Duracion = $("#Duracion").val();
+        let NumPaginas = $("#NumPaginas").val();
+        let Idioma = $("#Idioma").val();
+        let Imagen = $("#Imagen").val();
+        let ImagenB64 = $("#ImagenB64").val();
 
 
-        let NumeroEmpleado = $("#NumeroEmpleado").val();
 
 
 
-
-
-        var dependiente = {
-            "idDependiente": IdDependiente,
-            "nombre": Nombre,
-            "apellidoPaterno": ApellidoPaterno,
-            "apellidoMaterno": ApellidoMaterno,
-            "fechaNacimiento": FechaNacimiento,
-            "estadoCivil": EstadoCivil,
-            "telefono": Telefono,
-            "rFC": RFC,
-            "genero": Genero,
-            "numeroEmpleado": NumeroEmpleado,
-            "dependienteTipo": {
-                "idDependienteTipo": IdDependienteTipo,
-                "nombre": ""
+        var Medio = {
+            "idMedio": IdMedio,
+            "titulo": Titulo,
+            "añoLanzamiento": ALanzamiento,
+            "genero": {
+                "idGenero": Genero
             },
-            "dependientes": [
+            "autor": {
+                "idAutor": Autor
+            },
+            "editorial": {
+                "idEditorial": Editorial
+            },
+            "duracion": Duracion,
+            "numPaginas": NumPaginas,
+            "idioma": {
+                "idIdioma": Idioma
+            },
+            "imagen": Imagen,
+            "imagenB64": URL.createObjectURL($("#Imagen").files[0]),
+            "medios": [
                 "string"
             ]
         }
 
 
 
-        if ($("#IdDependiente").val().trim() == '') {
+        if ($("#IdMedio").val().trim() == '') {
 
             // AGREGA
             $.ajax({
-                url: '@Url.Action("DependienteAdd")',
+                url: '@Url.Action("MedioAdd")',
                 type: 'POST',
                 dataType: 'json',
-                data: { dependiente },
+                data: { Medio },
                 success: function (result) {
 
                     $('#saveChanges').html('Guardar');
 
                     if (result.correct) {
-                        dependientesGetAllByNumeroEmpleado();
-                        $('#modalForm').modal('hide');
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: result.message,
-                            showConfirmButton: false,
-                            timer: 1900
-                        });
+
+                        alert(result.correct);
                     } else {
 
                         Swal.fire({
@@ -468,3 +480,4 @@ else
 
 
 </script>
+ *@

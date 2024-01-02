@@ -1,0 +1,285 @@
+﻿@model ML.Editorial
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="row text-center">
+    <div class="col col-lg-12">
+        <h1>Lista de Editoriales:</h1>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-lg-3">
+     
+      
+            <input type="submit" value="Agregar" class="btn btn-success" id="btnModalShow">
+      
+
+    </div>
+</div>
+<br>
+<br>
+
+@if (Model.Editoriales != null)
+{
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col col-lg-12">
+
+                <table class="table" id="tableMedios">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th class="visually-hidden">IdEditorial</th>
+                            <th>Editorial</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.Editorial editorial in Model.Editoriales)
+                        {
+                            <tr>
+                                <td class="text-center">
+                            
+                                        <input class="btn btn-warning" type="submit" value="Editar" onclick="openModal(@editorial.IdEditorial)" >
+                                    
+                                </td>
+                                <th class="visually-hidden">@editorial.IdEditorial</th>
+                                <td>@editorial.NombreEdit</td>
+                                
+                                <td class="text-center">
+
+                                    <button class="btn btn-danger">Eliminar</button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-12 alert alert-info">
+                @ViewBag.Message
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+<div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="FormAddAndUpdate" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col col-md-12">
+
+                            <input type="number" class="form-control visually-hidden" name="IdEditorial" id="IdEditorial">
+
+                            <label>Editorial</label>
+                            <input type="text" class="form-control" name="NombreEdit" id="NombreEdit">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // $(document).ready(function () {
+    //     EditorialGetAll();
+    // });
+
+
+    $('#btnModalShow').click(function () {
+        openModal(null);
+    });
+
+
+
+    async function openModal(idEditorial) {
+
+        if (idEditorial == null) {
+            $("#FormAddAndUpdate").trigger("reset");
+            $("#staticBackdropLabel").text("Agregar editorial");
+        } else {
+            $("#FormAddAndUpdate").trigger("reset");
+            $("#staticBackdropLabel").text("Actualizar editorial");
+            editorialGetById(idEditorial);
+        }
+
+        $('#modalForm').modal('show');
+    }
+
+    function editorialGetById(idEditorial) {
+        $.ajax({
+            url: '@Url.Action("EditorialGetById")',
+            type: 'POST',
+            dataType: 'json',
+            data: { idEditorial },
+            success: function (result) {
+
+                if (result.correct) {
+
+                    $("#IdEditorial").val(result.object.idEditorial);
+                    $("#NombreEdit").val(result.object.nombreEdit);
+                   
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+
+
+    $('#saveChanges').click(function () {
+        saveChanges();
+    });
+
+
+
+    function saveChanges() {
+
+        $('#saveChanges').html('<div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>');
+
+
+        let IdEditorial = $("#IdEditorial").val();
+        let NombreEdit = $("#NombreEdit").val();
+      
+
+
+
+
+        var Editorial = {
+            "idEditorial": IdEditorial,
+            "nombreEdit": NombreEdit,
+            "editoriales": [
+                "string"
+            ]
+        }
+
+
+
+        if ($("#IdEditorial").val().trim() == '') {
+
+            // AGREGA
+            $.ajax({
+                url: '@Url.Action("EditorialAdd")',
+                type: 'POST',
+                dataType: 'json',
+                data: { Editorial },
+                success: function (result) {
+
+                    $('#saveChanges').html('Guardar');
+
+                    if (result.correct) {
+
+                        alert(result.correct);
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.message
+                        });
+                    }
+
+
+                },
+                error: function (result) {
+                    $('#saveChanges').html('Guardar');
+                    alert('Error.' + result.message);
+                }
+
+            });
+
+
+
+
+        } else {
+
+            //ACTUALIZA
+            $.ajax({
+                url: '@Url.Action("EditorialUpdate")',
+                type: 'POST',
+                dataType: 'json',
+                data: { Editorial },
+                success: function (result) {
+
+                    $('#saveChanges').html('Guardar');
+
+                    if (result.correct) {
+                        //actualizar tabla con getall
+                        $('#modalForm').modal('hide');
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 1900
+                        });
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.message
+                        });
+                    }
+
+
+                },
+                error: function (result) {
+                    $('#saveChanges').html('Guardar');
+                    alert('Error.' + result.message);
+                }
+
+            });
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+</script>

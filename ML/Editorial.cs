@@ -11,5 +11,7 @@ namespace ML
         public int IdEditorial { get; set; }
 
         public string NombreEdit { get; set; }
+
+        public List<object> Editoriales { get; set; }
     }
 }

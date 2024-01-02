@@ -11,8 +11,9 @@ namespace ML
 
         public int IdTipoMedio { get; set; }
 
-        public string NombreTM { get; set; }    
+        public string NombreTM { get; set; }
 
+        public List<object> TipoMedios { get; set; }
 
     }
 }

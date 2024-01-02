@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -131,23 +133,55 @@ namespace PL.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+
+                    var smtpClient = new SmtpClient("smtp.gmail.com")
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
+                        Port = 587,
+                        Credentials = new NetworkCredential("ejoramirez23@gmail.com", "vrqogqcrarxvjxdn"),
+                        EnableSsl = true,
+                        UseDefaultCredentials = false
+                    };
+
+
+                    var mensaje = new MailMessage
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                        From = new MailAddress("ejoramirez23@gmail.com"),
+                        Subject = "Confirmar correo",
+                        //Body = callbackUrl,
+                        Body = "" +
+                        "<div>" +
+                        "<h2>Hola </h2>" +
+                        "<a href=" + callbackUrl + "> accede para confirmar tu cuenta</a>" +
+                        "" +
+                        "</div>",
+                        IsBodyHtml = true,
+                    };
+
+                    mensaje.To.Add(Input.Email);
+
+                    smtpClient.Send(mensaje);
+
+
+                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+
+
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
             }
 
             // If we got this far, something failed, redisplay form

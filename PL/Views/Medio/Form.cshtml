@@ -1,0 +1,129 @@
+﻿@model ML.Medio
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Accion medio</h1>
+
+@using (@Html.BeginForm("Form", "Medio", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col col-md-6">
+
+             @Html.TextBoxFor(model => model.IdMedio, new { @class = "form-control visually-hidden" })
+    
+
+            <label>Titulo</label>
+            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", autocomplete = "off" })
+
+            <label>Tipo</label>
+            @Html.DropDownListFor(model => model.TipoMedio.IdTipoMedio, new SelectList(Model.TipoMedio.TipoMedios, "IdTipoMedio", "NombreTM" ), "Selecciona un tipo", new { @class = "form-control" })
+
+
+            <label>Lanzamiento</label>
+            @Html.TextBoxFor(model => model.AñoLanzamiento, new { @class = "form-control", @id = "datepickerAL", @type = "text" })
+
+
+            <label>Genero</label>
+            @Html.DropDownListFor(model => model.Genero.IdGenero, new SelectList(Model.Genero.Generos, "IdGenero", "NombreGenero"), "Selecciona un genero", new { @class = "form-control" })
+
+
+
+            <label>Autor</label>
+            @Html.DropDownListFor(model => model.Autor.IdAutor, new SelectList(Model.Autor.Autores, "IdAutor", "Nombre" ), "Selecciona un autor", new { @class = "form-control" })
+
+
+            <label>Editorial</label>
+            @Html.DropDownListFor(model => model.Editorial.IdEditorial, new SelectList(Model.Editorial.Editoriales, "IdEditorial", "NombreEdit" ), "Selecciona una editorial", new { @class = "form-control" })
+            
+
+            
+
+
+        </div>
+
+        <div class="col col-md-6">
+
+
+            <label>Duracion (Solo si el medio es de tipo video)</label>
+            @Html.TextBoxFor(model => model.Duracion, new { @class = "form-control", autocomplete = "off" })
+
+
+            <label>Paginas (Solo si el medio es de tipo libro o revista)</label>
+            @Html.TextBoxFor(model => model.NumPaginas, new { @class = "form-control", autocomplete = "off" })
+
+
+
+            <label>Idioma</label>
+            @Html.DropDownListFor(model => model.Idioma.IdIdioma, new SelectList(Model.Idioma.Idiomas, "IdIdioma", "NombreIdioma" ), "Selecciona un idioma", new { @class = "form-control" })
+
+
+            <input type="file" id="Imagen" name="Imagen" onchange="PreviewImagen(event)" />
+
+            <br><br>
+
+            @if (Model.Imagen == null)
+            {
+                <img src="https://img.lovepik.com/free-png/20220125/lovepik-books-png-image_401718684_wh1200.png" id="medioImagenPreview" style="width: 150px; height:150px;" />
+
+            }
+            else
+            {
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Imagen)" id="medioImagenPreview" style="width: 150px; height:150px;" />
+
+            }
+
+
+            @Html.HiddenFor(model => model.Imagen)
+
+
+            <br>
+
+            <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+            @Html.ActionLink("Cancelar", "Getall", "Medio", new { @class = "btn btn-danger" })
+
+
+        </div>
+    </div>
+}
+
+
+
+
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepickerAL").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1910:2023',
+                maxDate: new Date()
+            });
+        });
+
+       
+    </script>
+
+  
+
+
+    <script type="text/javascript">
+
+        function PreviewImagen(event) {
+            var img = document.getElementById('medioImagenPreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.onload = function () {
+                URL.revokeObjectURL(img.src)
+            }
+        }
+
+    </script>
+
+
+    }
