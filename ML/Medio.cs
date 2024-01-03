@@ -28,7 +28,7 @@ namespace ML
 
         public string Descripcion { get; set; }
 
-        public byte[] Imagen { get; set; }
+        public string Imagen { get; set; }
 
         public List<object> Medios { get; set; }
 
