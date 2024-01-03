@@ -98,15 +98,17 @@ namespace PL.Controllers
 
 
         [HttpPost]
-        public IActionResult Form(ML.Medio medio, IFormFile Imagen)
+        public IActionResult Form(ML.Medio medio)
         {
 
-            if (Imagen != null)
+            IFormFile image = Request.Form.Files["Imagen"];
+
+            if (image != null)
             {
-
-                medio.Imagen = convertFileToByteArray(Imagen);
-
+                byte[] ImagenBytes = convertFileToByteArray(image);
+                medio.Imagen = Convert.ToBase64String(ImagenBytes);
             }
+
 
 
             medio.AñoLanzamiento = null;

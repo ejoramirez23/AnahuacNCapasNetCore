@@ -250,6 +250,7 @@ public partial class AnahuacNcapasNetCoreContext : DbContext
             entity.Property(e => e.Duracion)
                 .HasMaxLength(5)
                 .IsUnicode(false);
+            entity.Property(e => e.Imagen).IsUnicode(false);
             entity.Property(e => e.Titulo)
                 .HasMaxLength(100)
                 .IsUnicode(false);

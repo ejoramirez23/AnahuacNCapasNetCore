@@ -27,7 +27,7 @@ public partial class Medio
 
     public string? Descripcion { get; set; }
 
-    public byte[]? Imagen { get; set; }
+    public string? Imagen { get; set; }
 
     public virtual Autor? IdAutorNavigation { get; set; }
 
