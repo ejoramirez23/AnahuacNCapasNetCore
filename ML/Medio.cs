@@ -15,7 +15,7 @@ namespace ML
         public ML.TipoMedio TipoMedio { get; set; }
         public ML.Editorial Editorial { get; set; }
 
-        public string AñoLanzamiento { get; set; }
+        public string? AñoLanzamiento { get; set; }
         public string Duracion { get; set; }
 
         public int NumPaginas { get; set; }
@@ -28,7 +28,7 @@ namespace ML
 
         public string Descripcion { get; set; }
 
-        public byte[] Imagen { get; set; }
+        public string Imagen { get; set; }
 
         public List<object> Medios { get; set; }
 

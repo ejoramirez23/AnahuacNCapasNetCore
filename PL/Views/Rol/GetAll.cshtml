@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity
+@{
+    // ViewData["Title"] = "GetAll";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3 style="text-align:center;">Roles</h3>
+</div>
+<br />
+
+<div class="container">
+    @Html.ActionLink("Agregar", "Form", "Rol", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        @if (Model != null)
+        {
+            <table class="table table-bordered table-striped table-responsive table-info table-hover">
+                <thead class="table table-dark">
+                    <tr>
+                        <th class="d-none">IdRol</th>
+                        <th style="text-align:center;">Asignar</th>
+                        <th style="text-align:center;">Rol</th>
+                        <th style="text-align:center;">Editar</th>
+                        <th style="text-align:center;">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rol in Model)
+                    {
+                        <tr>
+                            <td class="d-none">@rol.Id</td>
+                            <td style="text-align:center;"><a class="btn btn-warning" href="@Url.Action("Asignar","Rol", new{idRole=rol.Id, name=rol.Name})"><i class="bi bi-person-plus-fill"></i></a></td>
+                            <td style="text-align:center;">@rol.Name</td>
+                            <td style="text-align:center;"><a class="btn btn-warning" href="@Url.Action("Form","Rol", new{idRole=rol.Id, name=rol.Name})"><i class="bi bi-pencil-square"></i></a></td>
+                            <td style="text-align:center;"><a class="btn btn-danger" href="@Url.Action("Delete","Rol", new{IdRole=rol.Id})"><i class="bi bi-x-square-fill"></i></a></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+
+
+

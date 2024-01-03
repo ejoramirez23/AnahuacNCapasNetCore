@@ -11,5 +11,7 @@ namespace ML
         public int IdIdioma { get; set; }
 
         public string NombreIdioma { get; set; }
+
+        public List<object> Idiomas { get; set; }
     }
 }

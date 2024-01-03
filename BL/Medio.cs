@@ -49,7 +49,7 @@ namespace BL
                                          ApellidoPaterno = autorLINQ.ApellidoPaterno,
                                          ApellidoMaterno = autorLINQ.ApellidoMaterno,
                                          Descripcion = queryLINQ.Descripcion,
-                                         Imagen = queryLINQ.Imagen
+                                        imagen = queryLINQ.Imagen
                                      }).ToList();
 
                     result.Objects = new List<Object>();
@@ -70,7 +70,7 @@ namespace BL
                             medio.Editorial.NombreEdit = item.NombreEdit;
                             medio.AñoLanzamiento = item.AñoLanzamiento == null ? "" : item.AñoLanzamiento.Value.Date.ToString("dd/MM/yyyy");
                             medio.Duracion = item.Duracion;
-                            medio.NumPaginas = int.Parse(item.NumPaginas.ToString());
+                            medio.NumPaginas = (int)item.NumPaginas; //int.Parse(item.NumPaginas.ToString());
                             medio.Idioma = new ML.Idioma();
                             medio.Idioma.IdIdioma = int.Parse(item.IdIdioma.ToString());
                             medio.Idioma.NombreIdioma = item.NombreIdioma;
@@ -83,20 +83,13 @@ namespace BL
                             medio.Autor.ApellidoPaterno = item.ApellidoPaterno;
                             medio.Autor.ApellidoMaterno = item.ApellidoMaterno;
                             medio.Descripcion = item.Descripcion;
-                            byte[] medioImagen = item.Imagen as byte[] ?? null;
-                            medio.Imagen = medioImagen;
-
-
+                            medio.Imagen = item.imagen;
 
                             result.Objects.Add(medio);
                         }
-
-                        result.Correct = true;
+                            result.Correct = true;
                     }
-
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -104,23 +97,16 @@ namespace BL
                 result.Ex = ex;
                 result.Message = "ocurrio un error: " + ex.Message;
             }
-
             return result;
-
         }
-
-
-
 
 
         public static ML.Result GetById(int idMedio)
         {
             ML.Result result = new ML.Result();
 
-
             try
             {
-
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
 
@@ -156,15 +142,13 @@ namespace BL
                                          ApellidoPaterno = autorLINQ.ApellidoPaterno,
                                          ApellidoMaterno = autorLINQ.ApellidoMaterno,
                                          Descripcion = queryLINQ.Descripcion,
-                                         Imagen = queryLINQ.Imagen
+                                         imagen = queryLINQ.Imagen
                                      });
-
 
                     result.Object = new object();
 
                     if (medioLINQ != null)
                     {
-
                         var item = medioLINQ.FirstOrDefault();
 
                         ML.Medio medio = new ML.Medio();
@@ -192,19 +176,13 @@ namespace BL
                         medio.Autor.ApellidoPaterno = item.ApellidoPaterno;
                         medio.Autor.ApellidoMaterno = item.ApellidoMaterno;
                         medio.Descripcion = item.Descripcion;
-                        byte[] medioImagen = item.Imagen as byte[] ?? null;
-                        medio.Imagen = medioImagen;
+                        medio.Imagen = item.imagen;
 
                         result.Object = medio;
 
-
                         result.Correct = true;
-
-
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -229,17 +207,16 @@ namespace BL
         {
             ML.Result result = new ML.Result();
 
-
             try
             {
-
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}'  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , '{medio.NumPaginas}' , '{medio.Idioma.IdIdioma}' , '{medio.Genero.IdGenero}' , '{medio.Autor.IdAutor}' , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"AddMedio '{medio.Titulo}', {medio.TipoMedio.IdTipoMedio}, {medio.Editorial.IdEditorial}, '{medio.AñoLanzamiento}', '{medio.Duracion}', {medio.NumPaginas}, {medio.Idioma.IdIdioma} , {medio.Genero.IdGenero}, {medio.Autor.IdAutor}, '{medio.Descripcion}', '{medio.Imagen}'");
 
-                    if (query != null)
+                    if (query != 0)
                     {
                         result.Correct = true;
+                        result.Message = "El medio se agrego correctamente";
                     }
                     else
                     {
@@ -271,11 +248,12 @@ namespace BL
             {
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"UpdateMedio {medio.IdMedio} , '{medio.Titulo}', {medio.TipoMedio.IdTipoMedio} , {medio.Editorial.IdEditorial}  , '{medio.AñoLanzamiento}'  , '{medio.Duracion}' , {medio.NumPaginas} , {medio.Idioma.IdIdioma} , {medio.Genero.IdGenero} , {medio.Autor.IdAutor} , '{medio.Descripcion}' , '{medio.Imagen}'  ");
+                    var query = context.Database.ExecuteSqlRaw($"UpdateMedio '{medio.IdMedio}', '{medio.Titulo}', '{medio.TipoMedio.IdTipoMedio}' , '{medio.Editorial.IdEditorial}', '{medio.AñoLanzamiento}', '{medio.Duracion}', '{medio.NumPaginas}', '{medio.Idioma.IdIdioma}', '{medio.Genero.IdGenero}', '{medio.Autor.IdAutor}', '{medio.Descripcion}', '{medio.Imagen}' ");
 
-                    if (query != null)
+                    if (query != 0)
                     {
                         result.Correct = true;
+                        result.Message = "El medio se actualizo correctamente";
                     }
                     else
                     {
