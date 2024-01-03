@@ -101,7 +101,7 @@ namespace PL.Controllers
         public IActionResult Form(ML.Medio medio)
         {
 
-            IFormFile image = Request.Form.Files["Imagen"];
+            IFormFile image = Request.Form.Files["FuImagen"];
 
             if (image != null)
             {
@@ -111,7 +111,6 @@ namespace PL.Controllers
 
 
 
-            medio.AñoLanzamiento = null;
 
             if (medio.IdMedio == 0)
             {

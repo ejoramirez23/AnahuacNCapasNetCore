@@ -22,6 +22,13 @@
             @Html.DropDownListFor(model => model.TipoMedio.IdTipoMedio, new SelectList(Model.TipoMedio.TipoMedios, "IdTipoMedio", "NombreTM" ), "Selecciona un tipo", new { @class = "form-control" })
 
 
+            <label>Descripcion</label>
+            <br>
+            @Html.TextAreaFor(model => model.Descripcion, new { rows=5, columns=40, @class = "form-control"})
+            <br>
+
+
+
             <label>Lanzamiento</label>
             @Html.TextBoxFor(model => model.AñoLanzamiento, new { @class = "form-control", @id = "datepickerAL", @type = "text" })
 
@@ -60,7 +67,7 @@
             @Html.DropDownListFor(model => model.Idioma.IdIdioma, new SelectList(Model.Idioma.Idiomas, "IdIdioma", "NombreIdioma" ), "Selecciona un idioma", new { @class = "form-control" })
 
 
-            <input type="file" id="Imagen" name="Imagen" onchange="PreviewImagen(event)" />
+            <input type="file" id="FuImagen" name="FuImagen" onchange="PreviewImagen(event)" />
 
             <br><br>
 
@@ -71,18 +78,23 @@
             }
             else
             {
-                <img src="data:image/png;base64, Model.Imagen" id="medioImagenPreview" style="width: 150px; height:150px;" />
+                <img src="data:image/png;base64,@Model.Imagen" id="medioImagenPreview" id="medioImagenPreview" style="width: 150px; height:150px;" />
 
             }
 
 
-            @Html.HiddenFor(model => model.Imagen)
+            @Html.TextBoxFor(model => model.Imagen, new { @class = "form-control visually-hidden", autocomplete = "off" })
+
+
+
+          @*   @Html.HiddenFor(model => model.Imagen) *@
 
 
             <br>
 
             <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
-            @Html.ActionLink("Cancelar", "Getall", "Medio", new { @class = "btn btn-danger" })
+            @Html.ActionLink("Cancelar", "Getall", "Medio", new { @class = "btn btn-danger", @type="button" })
+        
 
 
         </div>
@@ -90,7 +102,14 @@
 }
 
 
+<style>
+    .ui-datepicker-calendar{
+        background-color: white;
+        padding: 15px;
+        border-radius: 9px;
 
+    }
+</style>
 
 
 @section scripts{

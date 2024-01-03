@@ -75,7 +75,7 @@
                                 <td>@medio.Autor.Nombre @medio.Autor.ApellidoPaterno @medio.Autor.ApellidoMaterno</td>
                                 <td>@medio.Editorial.NombreEdit</td>
                                 <td>@medio.AñoLanzamiento</td>
-                                @if (medio.Duracion == null)
+                                @if (medio.Duracion == "")
                                 {
                                     <td>@medio.NumPaginas paginas</td>
                                 }
