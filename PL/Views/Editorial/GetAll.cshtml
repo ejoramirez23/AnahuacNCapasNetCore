@@ -1,4 +1,4 @@
-﻿@model ML.Editorial
+﻿@* @model ML.Editorial *@
 @{
     ViewData["Title"] = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,15 +24,15 @@
 <br>
 <br>
 
-@if (Model.Editoriales != null)
-{
+@* @if (Model.Editoriales != null)
+{ *@
     <div class="container">
 
         <div class="row">
 
             <div class="col col-lg-12">
 
-                <table class="table" id="tableMedios">
+                <table class="table" id="tablaEditorial">
                     <thead class="table-light">
                         <tr>
                             <th>Editar</th>
@@ -42,9 +42,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (ML.Editorial editorial in Model.Editoriales)
+                    @*  @foreach (ML.Editorial editorial in Model.Editoriales)
                         {
-                            <tr>
+                             <tr>
                                 <td class="text-center">
                             
                                         <input class="btn btn-warning" type="submit" value="Editar" onclick="openModal(@editorial.IdEditorial)" >
@@ -55,11 +55,11 @@
                                 
                                 <td class="text-center">
 
-                                    <button class="btn btn-danger">Eliminar</button>
+                                    <button class="btn btn-danger" onclick="DeleteEditorial('@editorial.NombreEdit', @editorial.IdEditorial)">Eliminar</button>
 
                                 </td>
                             </tr>
-                        }
+                    }*@
                     </tbody>
                 </table>
 
@@ -68,7 +68,7 @@
 
 
     </div>
-}
+@* }
 else
 {
     <div class="container">
@@ -79,13 +79,13 @@ else
         </div>
     </div>
 }
-
+ *@
 
 
 
 
 <div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
@@ -117,9 +117,87 @@ else
 
 <script type="text/javascript">
 
-    // $(document).ready(function () {
-    //     EditorialGetAll();
-    // });
+    $(document).ready(function () {
+        EditorialGetAll();
+    });
+
+
+
+
+    async function EditorialGetAll() {
+
+          
+
+            $('#tablaEditorial tbody').html(`
+                    <tr>
+                        <td colspan="4">
+                            <div class="d-flex align-items-center">
+                                <strong class="text-primary"> Loading...</strong >
+                                <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
+                            </div>
+                        </td>
+                    </tr>`
+            );
+
+
+            $.ajax({
+                url: '@Url.Action("EditorialGetAll")',
+                type: 'POST',
+                dataType: 'json',
+                data: {  },
+                success: function (result) {
+
+                    if (result.objects.length > 0) {
+
+                        $('#tablaEditorial tbody').empty();
+
+                        $.each(result.objects, function (i, editorial) {
+                            let filas = `
+                                <tr>
+                                    <td class="text-center">
+
+                                            <input class="btn btn-warning" type="submit" value="Editar" onclick="openModal(${editorial.idEditorial})" >
+
+                                    </td>
+                                    <th class="visually-hidden">${editorial.idEditorial}</th>
+                                    <td>${editorial.nombreEdit}</td>
+
+                                    <td class="text-center">
+
+                                        <button class="btn btn-danger" onclick="DeleteEditorial('${editorial.nombreEdit}', ${editorial.idEditorial})">Eliminar</button>
+
+                                    </td>
+                                </tr>
+                                `;
+
+                            $('#tablaEditorial tbody').append(filas);
+                        });
+
+                    }else{
+
+
+                        $('#tablaEditorial tbody').html(` 
+                            <tr>
+                                <td colspan="4">
+                                    <div class="col col-lg-12 alert alert-info">
+                                        ${result.message}
+                                    </div>
+                                </td>
+                            </tr>`
+                        );
+
+
+                    }
+
+                },
+                error: function (result) {
+
+                    alert('Error.' + result.message);
+                }
+
+            });
+        }
+
 
 
     $('#btnModalShow').click(function () {
@@ -207,8 +285,15 @@ else
                     $('#saveChanges').html('Guardar');
 
                     if (result.correct) {
-
-                        alert(result.correct);
+                        $('#modalForm').modal('hide');
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: result.message,
+                            showConfirmButton: false,
+                            timer: 1900
+                        });
+                        EditorialGetAll();
                     } else {
 
                         Swal.fire({
@@ -216,6 +301,7 @@ else
                             title: "Oops...",
                             text: result.message
                         });
+
                     }
 
 
@@ -243,7 +329,7 @@ else
                     $('#saveChanges').html('Guardar');
 
                     if (result.correct) {
-                        //actualizar tabla con getall
+                       
                         $('#modalForm').modal('hide');
                         Swal.fire({
                             position: "center",
@@ -252,6 +338,7 @@ else
                             showConfirmButton: false,
                             timer: 1900
                         });
+                        EditorialGetAll();
                     } else {
 
                         Swal.fire({
@@ -275,6 +362,67 @@ else
     }
 
 
+
+    function DeleteEditorial(name, idEditorial){
+        Swal.fire({
+            title: "Eliminar editorial?",
+            text: `seguro que desea eliminar la editorial ${name}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar ahora!"
+        }).then((resulta) => {
+            if (resulta.isConfirmed) {
+
+                $.ajax({
+                    url: '@Url.Action("EditorialDelete")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { idEditorial },
+                    success: function (result) {
+
+                     
+
+                        if (result.correct) {
+                            
+                          
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 1900
+                            });
+
+                            EditorialGetAll();
+
+                        } else {
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.message
+                            });
+                        }
+
+
+                    },
+                    error: function (result) {
+                       
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.message
+                        });
+                    }
+
+                });
+
+
+            }
+        });
+    }
 
 
 
