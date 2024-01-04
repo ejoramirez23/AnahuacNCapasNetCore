@@ -54,6 +54,11 @@ namespace BL
 
                     result.Objects = new List<Object>();
 
+
+
+
+
+
                     if (medioLINQ.Count > 0)
                     {
                         foreach (var item in medioLINQ)
