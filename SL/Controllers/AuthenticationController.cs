@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SL.Model;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -31,10 +32,13 @@ namespace SL.Controllers
 
                 claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, request.Email));
 
+                DateTime date = new DateTime();
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = claims,
-                    Expires = DateTime.UtcNow.AddMinutes(1),
+                    //Expires = DateTime.UtcNow.AddMinutes(1),
+                    Expires = DateTime.ParseExact(date.ToString(), "yyyy-MM-dd", CultureInfo.GetCultureInfo("en-US").DateTimeFormat).AddMinutes(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
                 };
 
