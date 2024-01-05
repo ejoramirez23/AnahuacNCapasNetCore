@@ -138,8 +138,8 @@ namespace BL
 
                             prestamo.Medio = new ML.Medio();
                             prestamo.Medio.IdMedio = item.idMedio.Value;
-                            prestamo.FechaPrestamo =item.fechaPrestamo.Value;
-                            prestamo.FechaEntrega = item.fechaEntrega.Value;
+                            prestamo.FechaPrestamo = item.fechaPrestamo == null ? "" : item.fechaPrestamo.Value.Date.ToString("dd/MM/yyyy");
+                            prestamo.FechaEntrega = item.fechaEntrega == null ? "" : item.fechaEntrega.Value.Date.ToString("dd/MM/yyyy");
 
                             prestamo.Usuario = new ML.Usuario();
                             prestamo.Usuario.Id = item.idUsuario;
@@ -191,8 +191,9 @@ namespace BL
 
                         prestamo.Medio = new ML.Medio();
                         prestamo.Medio.IdMedio = query.idMedio.Value;
-                        prestamo.FechaPrestamo = query.fechaPrestamo.Value;
-                        prestamo.FechaEntrega = query.fechaEntrega.Value;
+                        prestamo.FechaPrestamo = query.fechaPrestamo == null ? "" : query.fechaPrestamo.Value.Date.ToString("dd/MM/yyyy");
+                        prestamo.FechaEntrega = query.fechaEntrega == null ? "" : query.fechaEntrega.Value.Date.ToString("dd/MM/yyyy");
+
                         prestamo.Estatus = query.estatus.Value;
 
                         prestamo.Usuario = new ML.Usuario();
