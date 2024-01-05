@@ -148,6 +148,8 @@ namespace BL
             return result;
         }
 
+
+
         public static ML.Result GetById(int idAutor)
         {
             ML.Result result = new ML.Result();

@@ -10,13 +10,13 @@ namespace PL.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            ML.Result result = BL.Editorial.GetAll();
+            //ML.Result result = BL.Editorial.GetAll();
             ML.Editorial editorial = new ML.Editorial();
          
 
-            editorial.Editoriales = new List<object>();
+            //editorial.Editoriales = new List<object>();
 
-            editorial.Editoriales = result.Objects;
+            //editorial.Editoriales = result.Objects;
 
 
             return View(editorial);
@@ -24,6 +24,16 @@ namespace PL.Controllers
 
 
 
+        public JsonResult EditorialGetAll()
+        {
+
+            ML.Result result = BL.Editorial.GetAll();
+
+            return Json(result);
+
+        } 
+        
+        
         public JsonResult EditorialGetById(int idEditorial)
         {
 
@@ -48,6 +58,16 @@ namespace PL.Controllers
         {
 
             ML.Result result = BL.Editorial.Update(editorial);
+
+            return Json(result);
+
+        }  
+        
+        
+        public JsonResult EditorialDelete(int idEditorial)
+        {
+
+            ML.Result result = BL.Editorial.Delete(idEditorial);
 
             return Json(result);
 

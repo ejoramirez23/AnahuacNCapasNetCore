@@ -103,6 +103,119 @@ namespace BL
             return result;
         }
 
+         public static ML.Result GetAll()
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
+                {
+                    var query = (from presLinq in context.Prestamos
+                                join medioLinq in context.Medios
+                                on presLinq.IdMedio equals medioLinq.IdMedio
+                                join userLinq in context.AspNetUsers
+                                on presLinq.IdUsuario equals userLinq.Id
+
+                                select new
+                                {
+                                    idPrestamo = presLinq.IdPrestamo,
+                                    idMedio = presLinq.IdMedio,
+                                    fechaPrestamo = presLinq.FechaPrestamo,
+                                    fechaEntrega = presLinq.FechaEntrega,
+                                    estatus = presLinq.Estatus,
+                                    idUsuario = presLinq.IdUsuario
+
+                                }).ToList();
+                    if (query.Count > 0)
+                    {
+                        result.Object = new List<object>();
+                        foreach (var item in query)
+                        {
+                            ML.Prestamo prestamo = new ML.Prestamo();
+
+                            prestamo.IdPrestamo = item.idPrestamo;
+
+                            prestamo.Medio = new ML.Medio();
+                            prestamo.Medio.IdMedio = item.idMedio.Value;
+                            prestamo.FechaPrestamo =item.fechaPrestamo.Value;
+                            prestamo.FechaEntrega = item.fechaEntrega.Value;
+
+                            prestamo.Usuario = new ML.Usuario();
+                            prestamo.Usuario.Id = item.idUsuario;
+
+                            result.Objects.Add(prestamo);
+                        }
+                        result.Correct = true; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct=false;
+                result.Ex = ex;
+                result.Message=ex.Message;
+            }
+            return result;
+        }
+
+
+        public static ML.Result GetById(int idprestamo)
+{
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
+                {
+                    var query = (from presLinq in context.Prestamos
+                                join medioLinq in context.Medios
+                                on presLinq.IdMedio equals medioLinq.IdMedio
+                                join userLinq in context.AspNetUsers
+                                on presLinq.IdUsuario equals userLinq.Id
+                                select new
+                                {
+                                    idPrestamo = presLinq.IdPrestamo,
+                                    idMedio = presLinq.IdMedio,
+                                    fechaPrestamo = presLinq.FechaPrestamo,
+                                    fechaEntrega = presLinq.FechaEntrega,
+                                    estatus = presLinq.Estatus,
+                                    idUsuario = presLinq.IdUsuario
+
+                                }).SingleOrDefault();
+                    if (query != null)
+                    {
+                        ML.Prestamo prestamo = new ML.Prestamo();
+
+                        prestamo.IdPrestamo = query.idPrestamo;
+
+                        prestamo.Medio = new ML.Medio();
+                        prestamo.Medio.IdMedio = query.idMedio.Value;
+                        prestamo.FechaPrestamo = query.fechaPrestamo.Value;
+                        prestamo.FechaEntrega = query.fechaEntrega.Value;
+                        prestamo.Estatus = query.estatus.Value;
+
+                        prestamo.Usuario = new ML.Usuario();
+                        prestamo.Usuario.Id = query.idUsuario;
+
+                        result.Object = prestamo;
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Ex = ex;
+                result.Message=ex.Message;
+            }
+            return result;
+        }
 
 
 

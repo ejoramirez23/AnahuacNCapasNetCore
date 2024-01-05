@@ -274,6 +274,7 @@ namespace BL
                 result.Message = "ocurrio un error: " + ex.Message;
             }
             return result;
+
         }
         // falta checarlo e implementarlo porque se deben eliminar en donde exista ese medio 
 
@@ -287,7 +288,7 @@ namespace BL
                 {
                     var query = context.Database.ExecuteSqlRaw($"DeleteMedio '{idMedio}' ");
 
-                    if (query != null)
+                    if (query != 0)
                     {
                         result.Correct = true;
                     }
