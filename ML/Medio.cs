@@ -12,6 +12,9 @@ namespace ML
 
         public string Titulo { get; set; }
 
+
+        
+
         public ML.TipoMedio TipoMedio { get; set; }
         public ML.Editorial Editorial { get; set; }
 
