@@ -9,7 +9,6 @@ namespace BL
 {
     public class Medio
     {
-
         public static ML.Result GetAll()
         {
             ML.Result result = new ML.Result();
@@ -52,15 +51,9 @@ namespace BL
                                         imagen = queryLINQ.Imagen
                                      }).ToList();
 
-                    result.Objects = new List<Object>();
-
-
-
-
-
-
                     if (medioLINQ.Count > 0)
                     {
+                        result.Objects = new List<object>();
                         foreach (var item in medioLINQ)
                         {
                             ML.Medio medio = new ML.Medio();
@@ -104,7 +97,6 @@ namespace BL
             }
             return result;
         }
-
 
         public static ML.Result GetById(int idMedio)
         {
@@ -201,13 +193,6 @@ namespace BL
 
         }
 
-
-
-
-
-
-
-
         public static ML.Result Add(ML.Medio medio)
         {
             ML.Result result = new ML.Result();
@@ -243,8 +228,6 @@ namespace BL
 
         }
 
-
-
         public static ML.Result Update(ML.Medio medio)
         {
             ML.Result result = new ML.Result();
@@ -276,8 +259,7 @@ namespace BL
             return result;
 
         }
-        // falta checarlo e implementarlo porque se deben eliminar en donde exista ese medio 
-
+        
         public static ML.Result Delete(int idMedio)
         {
             ML.Result result = new ML.Result();

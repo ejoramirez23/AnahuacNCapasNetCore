@@ -11,14 +11,15 @@ namespace ML
     {
         public int IdPrestamo { get; set; }
 
-        public ML.Medio Medio { get; set; }
+        public ML.Medio? Medio { get; set; }
 
-        public string FechaPrestamo { get; set; }
+        public string? FechaPrestamo { get; set; }
 
-        public string FechaEntrega { get; set; }
+        public string? FechaEntrega { get; set; }
 
         public bool Estatus { get; set; }
-        public ML.Usuario Usuario { get; set; }
+        public ML.Usuario? Usuario { get; set; }
+        public List<object> Prestamos { get; set; }
 
     }
 }

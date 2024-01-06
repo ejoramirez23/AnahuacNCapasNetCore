@@ -8,7 +8,6 @@ namespace ML
 {
     public class Usuario
     {
-
         public string Id {  get; set; }
         public string UserName { get; set; }
         public ML.Rol Rol { get; set; }

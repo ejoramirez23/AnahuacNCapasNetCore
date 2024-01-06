@@ -121,15 +121,17 @@ namespace BL
                                 {
                                     idPrestamo = presLinq.IdPrestamo,
                                     idMedio = presLinq.IdMedio,
+                                    tituloMedio = medioLinq.Titulo,
                                     fechaPrestamo = presLinq.FechaPrestamo,
                                     fechaEntrega = presLinq.FechaEntrega,
                                     estatus = presLinq.Estatus,
                                     idUsuario = presLinq.IdUsuario
 
                                 }).ToList();
+
                     if (query.Count > 0)
                     {
-                        result.Object = new List<object>();
+                        result.Objects = new List<object>();
                         foreach (var item in query)
                         {
                             ML.Prestamo prestamo = new ML.Prestamo();
@@ -138,9 +140,10 @@ namespace BL
 
                             prestamo.Medio = new ML.Medio();
                             prestamo.Medio.IdMedio = item.idMedio.Value;
+                            prestamo.Medio.Titulo = item.tituloMedio;
                             prestamo.FechaPrestamo = item.fechaPrestamo == null ? "" : item.fechaPrestamo.Value.Date.ToString("dd/MM/yyyy");
                             prestamo.FechaEntrega = item.fechaEntrega == null ? "" : item.fechaEntrega.Value.Date.ToString("dd/MM/yyyy");
-
+                            prestamo.Estatus = item.estatus.Value;
                             prestamo.Usuario = new ML.Usuario();
                             prestamo.Usuario.Id = item.idUsuario;
 
@@ -159,9 +162,8 @@ namespace BL
             return result;
         }
 
-
         public static ML.Result GetById(int idprestamo)
-{
+        {
             ML.Result result = new ML.Result();
 
             try
@@ -193,7 +195,6 @@ namespace BL
                         prestamo.Medio.IdMedio = query.idMedio.Value;
                         prestamo.FechaPrestamo = query.fechaPrestamo == null ? "" : query.fechaPrestamo.Value.Date.ToString("dd/MM/yyyy");
                         prestamo.FechaEntrega = query.fechaEntrega == null ? "" : query.fechaEntrega.Value.Date.ToString("dd/MM/yyyy");
-
                         prestamo.Estatus = query.estatus.Value;
 
                         prestamo.Usuario = new ML.Usuario();
@@ -218,9 +219,61 @@ namespace BL
             return result;
         }
 
+        public static ML.Result GetByIdUsuario()
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
+                {
+                    var query = (from prestamoLinq in context.Prestamos
+                                 join medioLinq in context.Medios
+                                 on prestamoLinq.IdMedio equals medioLinq.IdMedio
+                                 join userLinq in context.AspNetUsers
+                                 on prestamoLinq.IdUsuario equals userLinq.Id
+                                 select new
+                                 {
+                                     idPrestamo = prestamoLinq.IdPrestamo,
+                                     idMedio = prestamoLinq.IdMedio,
+                                     medioTitulo = medioLinq.Titulo,
+                                     fechaPrestamo = prestamoLinq.FechaPrestamo,
+                                     fechaEntrega = prestamoLinq.FechaEntrega,
+                                     estatus = prestamoLinq.Estatus,
+                                     idUsuario = prestamoLinq.IdUsuario
+                                 }).SingleOrDefault();
 
+                    if (query != null)
+                    {
+                        ML.Prestamo prestamo = new ML.Prestamo();
 
+                        prestamo.IdPrestamo = query.idPrestamo;
 
+                        prestamo.Medio = new ML.Medio();
+                        prestamo.Medio.IdMedio = query.idMedio.Value;
+                        prestamo.FechaPrestamo = query.fechaPrestamo == null ? "" : query.fechaPrestamo.Value.Date.ToString("dd/MM/yyyy");
+                        prestamo.FechaEntrega = query.fechaEntrega == null ? "" : query.fechaEntrega.Value.Date.ToString("dd/MM/yyyy");
+                        prestamo.Estatus = query.estatus.Value;
+                        prestamo.Usuario = new ML.Usuario();
+                        prestamo.Usuario.Id = query.idUsuario;
 
+                        result.Object = prestamo;
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.Message = "No tienes prestamos vigentes";
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Correct = false;
+                result.Ex = ex;
+                result.Message=ex.Message;
+            }
+            return result;
+        }
     }
 }
