@@ -8,8 +8,12 @@ namespace ML
 {
     public class Rol
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }    
-        public List<object> Roles { get; set; }
+     
+
+
+        public string? Name { get; set; }
+        public Guid RoleId { get; set; }
+        public List<object>? Roles { get; set; }
+
     }
 }

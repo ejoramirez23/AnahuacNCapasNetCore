@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ML;
 using System.ComponentModel.DataAnnotations;
 
 namespace PL.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador")]
     public class RolController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
@@ -26,15 +27,16 @@ namespace PL.Controllers
         {
 
             ML.Result result = BL.UserIdentity.GetAll();
-            ML.Usuario ui = new ML.Usuario();
+            ML.UserIdentity ui = new ML.UserIdentity();
 
             if (result.Correct)
             {
-                ui.Usuarios = result.Objects;
+               
+                ui.IdentityUsers = result.Objects;
             }
 
             ui.Rol = new ML.Rol();
-            ui.Rol.Id = idRole;
+            ui.Rol.RoleId = idRole;
             ui.Rol.Name = name;
             ViewBag.Name = name;
 
@@ -42,7 +44,7 @@ namespace PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Asignar(ML.Usuario user)
+        public IActionResult Asignar(ML.UserIdentity user)
         {
             ML.Result result = BL.UserIdentity.Asignar(user);
 
