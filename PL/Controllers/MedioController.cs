@@ -96,6 +96,15 @@ namespace PL.Controllers
 
 
 
+        [HttpPost]
+
+        public JsonResult GeneroGetAll()
+        {
+            ML. Result result = BL.Genero.GetAll();  
+
+            return Json(result);
+        }
+
 
         [HttpPost]
         public IActionResult Form(ML.Medio medio)

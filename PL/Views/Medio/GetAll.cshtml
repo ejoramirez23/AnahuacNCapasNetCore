@@ -19,17 +19,17 @@
             <input type="submit" value="Agregar" class="btn btn-success"id="btnModalShow" >
         </form>
  *@
-        <form asp-action="Form" method="get" asp-controller="Medio">
-            <input type="submit" value="Agregar" class="btn btn-success">
-        </form>
+        @*<form asp-action="Form" method="get" asp-controller="Medio">*@
+            <input type="submit" value="Agregar" class="btn btn-success" id="btnModalShow">
+        @*</form>*@
 
     </div>
 </div>
 <br>
 <br>
 
-@if (Model.Medios != null)
-{
+@* @if (Model.Medios != null)
+{ *@
     <div class="container">
 
         <div class="row">
@@ -52,13 +52,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (ML.Medio medio in Model.Medios)
+                      @*   @foreach (ML.Medio medio in Model.Medios)
                         {
                             <tr>
                                 <td class="text-center">
                                     <form asp-action="Form" method="get" asp-controller="Medio">
                                         <input type="number" class="form-control visually-hidden" value="@medio.IdMedio" name="IdMedio">
-                                        <input class="btn btn-warning"type="submit" value="Editar" @* onclick="openModal(@medio.IdMedio)" *@>
+                                        <input class="btn btn-warning"type="submit" value="Editar" onclick="openModal(@medio.IdMedio)" >
                                     </form>
                                 </td>
                                 <td>@medio.Titulo</td>
@@ -89,7 +89,7 @@
                                     <button class="btn btn-danger">Eliminar</button>
                                 </td>
                             </tr>
-                        }
+                        } *@
                     </tbody>
                 </table>
 
@@ -98,7 +98,7 @@
 
 
     </div>
-}
+@* }
 else
 {
     <div class="container">
@@ -108,10 +108,10 @@ else
             </div>
         </div>
     </div>
-}
+} *@
 
 
-@* 
+
 
 <div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -128,7 +128,7 @@ else
 
                             <input type="number" class="form-control visually-hidden" name="IdMedio" id="IdMedio">
 
-                            <input type="text" class="form-control visually-hidden" name="ImagenB64" id="ImagenB64">
+                            @* <input type="text" class="form-control visually-hidden" name="ImagenB64" id="ImagenB64"> *@
 
                             <label>Titulo</label>
                             <input type="text" class="form-control" name="Titulo" id="Titulo">
@@ -138,9 +138,7 @@ else
 
                             <label>Genero</label>
                             <select type="text" class="form-control" name="Genero" id="Genero">
-                                <option value="0">Selecciona un estado civil</option>
-                                <option value="Soltero">Soltera/o</option>
-                                <option value="Casado">Casada/o</option>
+                               
                             </select>
 
                             <label>Autor</label>
@@ -201,24 +199,55 @@ else
 </div>
 
 
- *@
 
 
-@* 
+
 <script type="text/javascript">
 
-    // $(document).ready(function () {
-    //     MedioGetAll();
-    // });
+    $(document).ready(function () {
+         MedioGetAll();
+    });
 
 
     $('#btnModalShow').click(function () {
         openModal(null);
     });
 
+    function GeneroGetAll() {
+        $.ajax({
+            url: '@Url.Action("GeneroGetAll")',
+            type: 'POST',
+            success: function (result) {
+
+                $('#Genero').html('<option value="0">Selecciona un genero</option>');
 
 
-    async function openModal(idMedio) {
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, genero) {
+                        let filas = `
+                                <option value="${genero.idGenero}">${genero.nombreGenero}</option>
+                            `;
+
+                        $('#Genero').append(filas);
+                    });
+                  
+
+                    
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+    function openModal(idMedio) {
+
+        GeneroGetAll();
+       
 
         if (idMedio == null) {
             $("#FormAddAndUpdate").trigger("reset");
@@ -480,4 +509,3 @@ else
 
 
 </script>
- *@
