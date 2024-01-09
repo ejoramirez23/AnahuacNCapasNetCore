@@ -5,24 +5,24 @@ namespace PL.Controllers
 {
     public class MedioController : Controller
     {
-            [HttpGet]
-            public IActionResult GetAll()
-            {
-                ML.Result result = BL.Medio.GetAll();
-                ML.Medio medio = new ML.Medio();
-                medio.TipoMedio = new ML.TipoMedio();
-                medio.Editorial = new ML.Editorial();
-                medio.Idioma = new ML.Idioma();
-                medio.Genero = new ML.Genero();
-                medio.Autor = new ML.Autor();
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            ML.Result result = BL.Medio.GetAll();
+            ML.Medio medio = new ML.Medio();
+            medio.TipoMedio = new ML.TipoMedio();
+            medio.Editorial = new ML.Editorial();
+            medio.Idioma = new ML.Idioma();
+            medio.Genero = new ML.Genero();
+            medio.Autor = new ML.Autor();
 
 
-                medio.Medios = new List<object>();
+            medio.Medios = new List<object>();
 
-                medio.Medios = result.Objects;
+            medio.Medios = result.Objects;
 
-                return View(medio);
-            }
+            return View(medio);
+        }
 
 
 
@@ -95,6 +95,15 @@ namespace PL.Controllers
         }
 
 
+        [HttpPost]
+
+        public IActionResult MedioGetAll()
+        {
+            ML.Result result = BL.Medio.GetAll(); 
+            return Json(result);
+        }
+
+
 
         [HttpPost]
 
@@ -104,6 +113,39 @@ namespace PL.Controllers
 
             return Json(result);
         }
+        
+        
+        [HttpPost]
+
+        public JsonResult AutorGetAll()
+        {
+            ML. Result result = BL.Autor.GetAll();  
+
+            return Json(result);
+        }
+          
+        
+        public JsonResult EditorialGetAll()
+        {
+            ML. Result result = BL.Editorial.GetAll();  
+
+            return Json(result);
+        }  
+        
+        
+        
+        public JsonResult IdiomaGetAll()
+        {
+            ML. Result result = BL.Idioma.GetAll();  
+
+            return Json(result);
+        }
+
+
+
+
+
+
 
 
         [HttpPost]
@@ -139,8 +181,6 @@ namespace PL.Controllers
 
             
 
-
-            return View(medio);
         }
 
 
