@@ -7,13 +7,6 @@
 
 
 
-@section Scripts {
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <style type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css"></style>
-    <script type="text/javascript" src="~/Prestamo/Prestamo.js"></script>
-}
-
 <div class="row">
     <div class="col-lg-12">
         <h3 style="text-align:center;">Prestamos</h3>
@@ -46,5 +39,47 @@
         </table>
     </div>
 </div>
+@*
+@section Script{
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <style type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css"></style>
+} *@
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetAll();
+    });
+
+    function GetAll() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("PrestamoGetAll")',
+            success: function (result) {
+
+                $("#tblPrestamo tbody").empty();
+
+                $.each(result.objects, function (i, prestamo) {
+                    var filas =
+                        '<tr>'
+                        + '<td class="d-none" id="tdIdPrestamo">' + prestamo.idPrestamo + '</td>'
+                        + '<td class="d-none" id="tdIdMedio">' + prestamo.medio.idMedio + '</td>'
+                        + '<td style="text-align:center;" id="tdTitulo">' + prestamo.medio.titulo + '</td>'
+                        + '<td style="text-align:center;" id="tdFechaPrestamo">' + prestamo.fechaPrestamo + '</td>'
+                        + '<td style="text-align:center;" id="tdFechaEntrega">' + prestamo.fechaEntrega + '</td>'
+                        + '<td style="text-align:center;" id="tdEstatus">' + prestamo.estatus + '</td>'
+                        + '<td class="d-none" id="tdIdUsuario">' + prestamo.usuario.id + '</td>'
+                        + '</tr>'
+                    $("#tblPrestamo").append(filas);
+                });
+            },
+            error: function (result) {
+                alert('Error en la consulta');
+            }
+        });
+    };
+</script>
 
 

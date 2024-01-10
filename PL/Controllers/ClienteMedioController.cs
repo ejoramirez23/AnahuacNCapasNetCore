@@ -2,9 +2,8 @@
 
 namespace PL.Controllers
 {
-    public class ClientePrestamoController : Controller
+    public class ClienteMedioController : Controller
     {
-
 
         [HttpGet]
         public IActionResult GetAll()
@@ -13,14 +12,11 @@ namespace PL.Controllers
         }
 
         [HttpGet]
-        public JsonResult PrestamoGetAll()
+        public JsonResult MedioGetAll()
         {
-            ML.Result result = BL.Prestamo.GetAll();
+            ML.Result result = BL.Medio.GetAll();
 
             return Json(result);
         }
-
-
-
     }
 }
