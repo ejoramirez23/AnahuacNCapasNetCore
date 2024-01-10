@@ -19,7 +19,7 @@ namespace ML
 
         public bool Estatus { get; set; }
         public ML.Usuario? Usuario { get; set; }
-        public List<object> Prestamos { get; set; }
+        public List<object>? Prestamos { get; set; }
 
     }
 }
