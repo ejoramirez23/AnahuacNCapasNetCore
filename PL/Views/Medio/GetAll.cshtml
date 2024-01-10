@@ -194,6 +194,10 @@ else
     </div>
 </div>
 
+
+
+
+
 <template id="tpRow">
     <tr>
         <td class="text-center">
@@ -241,6 +245,7 @@ else
     $('#btnModalShow').click(function () {
         openModal(null);
     });
+
 
     function GeneroGetAll() {
         $.ajax({
@@ -541,14 +546,11 @@ else
         let Duracion = $("#Duracion").val();
         let NumPaginas = $("#NumPaginas").val();
         let Idioma = $("#Idioma").val();
-        let Imagen = $("#Imagen").val();
-        let ImagenB64 = $("#ImagenB64").val();
-
-
-
-
-
-        var Medio = {
+        let Imagen = "";
+        
+        let fuImagen = document.getElementById("fuImagen").files[0];
+        
+        var medio = {
             "idMedio": IdMedio,
             "titulo": Titulo,
             "añoLanzamiento": ALanzamiento,
@@ -567,22 +569,45 @@ else
                 "idIdioma": Idioma
             },
             "imagen": Imagen,
-            "imagenB64": URL.createObjectURL($("#Imagen").files[0]),
             "medios": [
+                "string"
+            ]
+        }
+
+        const FormAddAndUpdate = document.getElementById("FormAddAndUpdate");
+        const fdata = new FormData();
+        fdata.append("fuImagen", fuImagen);
+        fdata.append("Medio", medio);
+        fdata.append("Id", 2);
+
+
+        var Editorial = {
+            "idEditorial": 2,
+            "nombreEdit": "dfsdfdsfds",
+            "editoriales": [
                 "string"
             ]
         }
 
 
 
+
+
+
+
+
         if ($("#IdMedio").val().trim() == '') {
+       
+            const medioe = 2;
 
             // AGREGA
             $.ajax({
-                url: '@Url.Action("MedioAdd")',
+                url: '@Url.Action("AddMedio")',
+                data:  Editorial ,
+                processData: false,
+                contentType: false,
                 type: 'POST',
                 dataType: 'json',
-                data: { Medio },
                 success: function (result) {
 
                     $('#saveChanges').html('Guardar');

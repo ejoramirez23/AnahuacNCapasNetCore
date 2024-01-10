@@ -141,6 +141,24 @@ namespace PL.Controllers
             return Json(result);
         }
 
+        
+        public JsonResult AddMedio(ML.Editorial editorial)
+        {
+            
+            //if (Request.Form.Files.Count > 0)
+            //{
+            //    IFormFile image = Request.Form.Files[0];
+               
+            //}
+
+           
+
+            //ML. Result result = BL.Medio.Add(medio);      
+
+            return Json("");
+        }
+
+
 
 
 
