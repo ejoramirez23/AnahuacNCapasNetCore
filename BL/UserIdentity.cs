@@ -49,7 +49,7 @@ namespace BL
             return result;
         }
 
-        public static ML.Result Asignar(ML.Usuario user)
+        public static ML.Result Asignar(ML.UserIdentity user)
         {
             ML.Result result = new ML.Result();
 
@@ -57,7 +57,7 @@ namespace BL
             {
                 using (DL.AnahuacNcapasNetCoreContext context = new DL.AnahuacNcapasNetCoreContext())
                 {
-                    int query = context.Database.ExecuteSqlRaw($"AddAspNetUserRoles '{user.Id}', '{user.Rol?.Id}'");
+                    int query = context.Database.ExecuteSqlRaw($"AddAspNetUserRoles '{user.IdUsuario}', '{user.Rol.RoleId}'");
 
                     if (query != 0)
                     {

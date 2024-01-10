@@ -15,90 +15,90 @@
 </div>
 <div class="row text-center">
     <div class="col-lg-3">
-      @*   <form asp-action="Form" method="get" asp-controller="Medio">
-            <input type="submit" value="Agregar" class="btn btn-success"id="btnModalShow" >
+        @*   <form asp-action="Form" method="get" asp-controller="Medio">
+        <input type="submit" value="Agregar" class="btn btn-success"id="btnModalShow" >
         </form>
- *@
-        <form asp-action="Form" method="get" asp-controller="Medio">
-            <input type="submit" value="Agregar" class="btn btn-success">
-        </form>
+        *@
+        @*<form asp-action="Form" method="get" asp-controller="Medio">*@
+        <input type="submit" value="Agregar" class="btn btn-success" id="btnModalShow">
+        @*</form>*@
 
     </div>
 </div>
 <br>
 <br>
 
-@if (Model.Medios != null)
-{
-    <div class="container">
+@* @if (Model.Medios != null)
+{ *@
+<div class="container">
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col col-lg-12">
+        <div class="col col-lg-12">
 
-                <table class="table" id="tableMedios">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Editar</th>
-                            <th>Titulo</th>
-                            <th>Imagen</th>
-                            <th>Autor</th>
-                            <th>Editorial</th>
-                            <th>Año lanzamiento</th>
-                            <th>Duracion/#Paginas</th>
-                            <th>Idioma</th>
-                            <th>Genero</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (ML.Medio medio in Model.Medios)
-                        {
-                            <tr>
-                                <td class="text-center">
-                                    <form asp-action="Form" method="get" asp-controller="Medio">
-                                        <input type="number" class="form-control visually-hidden" value="@medio.IdMedio" name="IdMedio">
-                                        <input class="btn btn-warning"type="submit" value="Editar" @* onclick="openModal(@medio.IdMedio)" *@>
-                                    </form>
-                                </td>
-                                <td>@medio.Titulo</td>
-                                <td>
-                                    @if (medio.Imagen == null)
-                                    {
-                                        <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" />
-                                    }
-                                    else
-                                    {
-                                        <img src="data:image/png;base64,@medio.Imagen" id="medioImagen" style="width: 100px; height:100px;" />
-                                    }
-                                </td>
-                                <td>@medio.Autor.Nombre @medio.Autor.ApellidoPaterno @medio.Autor.ApellidoMaterno</td>
-                                <td>@medio.Editorial.NombreEdit</td>
-                                <td>@medio.AñoLanzamiento</td>
-                                @if (medio.Duracion == "")
-                                {
-                                    <td>@medio.NumPaginas paginas</td>
-                                }
-                                else
-                                {
-                                    <td>@medio.Duracion  min</td>
-                                }
-                                <td>@medio.Idioma.NombreIdioma</td>
-                                <td>@medio.Genero.NombreGenero</td>
-                                <td class="text-center">
-                                    <button class="btn btn-danger">Eliminar</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <table class="table" id="tableMedios">
+                <thead class="table-light">
+                    <tr>
+                        <th>Editar</th>
+                        <th>Titulo</th>
+                        <th>Imagen</th>
+                        <th>Autor</th>
+                        <th>Editorial</th>
+                        <th>Año lanzamiento</th>
+                        <th>Duracion/#Paginas</th>
+                        <th>Idioma</th>
+                        <th>Genero</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*   @foreach (ML.Medio medio in Model.Medios)
+                    {
+                    <tr>
+                    <td class="text-center">
+                    <form asp-action="Form" method="get" asp-controller="Medio">
+                    <input type="number" class="form-control visually-hidden" value="@medio.IdMedio" name="IdMedio">
+                    <input class="btn btn-warning"type="submit" value="Editar" onclick="openModal(@medio.IdMedio)" >
+                    </form>
+                    </td>
+                    <td>@medio.Titulo</td>
+                    <td>
+                    @if (medio.Imagen == null)
+                    {
+                    <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" />
+                    }
+                    else
+                    {
+                    <img src="data:image/png;base64,@medio.Imagen" id="medioImagen" style="width: 100px; height:100px;" />
+                    }
+                    </td>
+                    <td>@medio.Autor.Nombre @medio.Autor.ApellidoPaterno @medio.Autor.ApellidoMaterno</td>
+                    <td>@medio.Editorial.NombreEdit</td>
+                    <td>@medio.AñoLanzamiento</td>
+                    @if (medio.Duracion == "")
+                    {
+                    <td>@medio.NumPaginas paginas</td>
+                    }
+                    else
+                    {
+                    <td>@medio.Duracion  min</td>
+                    }
+                    <td>@medio.Idioma.NombreIdioma</td>
+                    <td>@medio.Genero.NombreGenero</td>
+                    <td class="text-center">
+                    <button class="btn btn-danger">Eliminar</button>
+                    </td>
+                    </tr>
+                    } *@
+                </tbody>
+            </table>
 
-            </div>
         </div>
-
-
     </div>
-}
+
+
+</div>
+@* }
 else
 {
     <div class="container">
@@ -108,10 +108,10 @@ else
             </div>
         </div>
     </div>
-}
+} *@
 
 
-@* 
+
 
 <div class="modal fade" id="modalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -128,33 +128,30 @@ else
 
                             <input type="number" class="form-control visually-hidden" name="IdMedio" id="IdMedio">
 
-                            <input type="text" class="form-control visually-hidden" name="ImagenB64" id="ImagenB64">
+                            <input type="text" class="form-control" name="Imagen" id="Imagen">
 
                             <label>Titulo</label>
                             <input type="text" class="form-control" name="Titulo" id="Titulo">
+
+
+                            <label>Descripcion</label>
+                            <br>
+                            <textarea id="Descripcion" name="Descripcion" rows="5" cols="40"></textarea>
+                            <br>
 
                             <label>Lanzamiento</label>
                             <input type="date" class="form-control" name="AñoLanzamiento" id="AñoLanzamiento">
 
                             <label>Genero</label>
                             <select type="text" class="form-control" name="Genero" id="Genero">
-                                <option value="0">Selecciona un estado civil</option>
-                                <option value="Soltero">Soltera/o</option>
-                                <option value="Casado">Casada/o</option>
                             </select>
 
                             <label>Autor</label>
                             <select type="text" class="form-control" name="Autor" id="Autor">
-                                <option value="0">Selecciona un estado civil</option>
-                                <option value="Soltero">Soltera/o</option>
-                                <option value="Casado">Casada/o</option>
                             </select>
 
                             <label>Editorial</label>
                             <select type="text" class="form-control" name="Editorial" id="Editorial">
-                                <option value="0">Selecciona un estado civil</option>
-                                <option value="Soltero">Soltera/o</option>
-                                <option value="Casado">Casada/o</option>
                             </select>
 
                         </div>
@@ -171,14 +168,11 @@ else
 
                             <label>Idioma</label>
                             <select type="text" class="form-control" name="Idioma" id="Idioma">
-                                <option value="0">Selecciona un estado civil</option>
-                                <option value="Soltero">Soltera/o</option>
-                                <option value="Casado">Casada/o</option>
                             </select>
 
 
                             <label>
-                                <input type="file" class="form-control" name="Imagen" id="Imagen" onchange="PreviewImagen(event)">
+                                <input type="file" class="form-control" name="fuImagen" id="fuImagen" onchange="PreviewImagen(event)">
                                 Subir Imagen
                             </label>
 
@@ -201,15 +195,51 @@ else
 </div>
 
 
- *@
 
 
-@* 
+
+<template id="tpRow">
+    <tr>
+        <td class="text-center">
+
+            <input type="number" class="form-control visually-hidden IdMedio" value="" name="IdMedio">
+            <input class="btn btn-warning" id="editar" type="submit" value="Editar">
+
+        </td>
+        <td class="Titulo">titulo</td>
+        <td class="Imagen">
+
+            <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" /> 
+
+
+        </td>
+        <td class="Autor">autor</td>
+        <td class="Editorial">editorial</td>
+        <td class="Lanzamiento">lanzamiento</td>
+
+        <td class="DurPag">duracion/paginas</td>
+
+
+        <td class="Idioma">idioma</td>
+        <td class="Genero">genero</td>
+
+        <td class="text-center">
+            <button class="btn btn-danger" id="eliminar">Eliminar</button>
+        </td>
+    </tr>
+
+</template>
+
+
 <script type="text/javascript">
 
-    // $(document).ready(function () {
-    //     MedioGetAll();
-    // });
+    $(document).ready(function () {
+        MedioGetAll();
+    });
+
+    const tableMedios = document.getElementById("tableMedios");
+    const tpRow = document.getElementById("tpRow");
+    const fgTpRow = document.createDocumentFragment();
 
 
     $('#btnModalShow').click(function () {
@@ -217,8 +247,139 @@ else
     });
 
 
+    function GeneroGetAll() {
+        $.ajax({
+            url: '@Url.Action("GeneroGetAll")',
+            type: 'POST',
+            success: function (result) {
 
-    async function openModal(idMedio) {
+                $('#Genero').html('<option value="0">Selecciona un genero</option>');
+
+
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, genero) {
+                        let filas = `
+                                            <option value="${genero.idGenero}">${genero.nombreGenero}</option>
+                                        `;
+
+                        $('#Genero').append(filas);
+                    });
+
+
+
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+
+    function AutorGetAll() {
+        $.ajax({
+            url: '@Url.Action("AutorGetAll")',
+            type: 'POST',
+            success: function (result) {
+
+                $('#Autor').html('<option value="0">Selecciona un autor</option>');
+
+
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, autor) {
+                        let filas = `
+                                                    <option value="${autor.idAutor}">${autor.nombre} ${autor.apellidoPaterno} ${autor.apellidoMaterno}</option>
+                                        `;
+
+                        $('#Autor').append(filas);
+                    });
+
+
+
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+    function EditorialGetAll() {
+        $.ajax({
+            url: '@Url.Action("EditorialGetAll")',
+            type: 'POST',
+            success: function (result) {
+
+                $('#Editorial').html('<option value="0">Selecciona una editorial</option>');
+
+
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, editorial) {
+                        let filas = `
+                                            <option value="${editorial.idEditorial}">${editorial.nombreEdit}</option>
+                                        `;
+
+                        $('#Editorial').append(filas);
+                    });
+
+
+
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+
+    function IdiomaGetAll() {
+        $.ajax({
+            url: '@Url.Action("IdiomaGetAll")',
+            type: 'POST',
+            success: function (result) {
+
+                $('#Idioma').html('<option value="0">Selecciona un idioma</option>');
+
+
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, idioma) {
+                        let filas = `
+                                                <option value="${idioma.idIdioma}">${idioma.nombreIdioma}</option>
+                                            `;
+
+                        $('#Idioma').append(filas);
+                    });
+
+
+
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
+
+    function openModal(idMedio) {
+
+        GeneroGetAll();
+        AutorGetAll();
+        EditorialGetAll();
+        IdiomaGetAll();
+
 
         if (idMedio == null) {
             $("#FormAddAndUpdate").trigger("reset");
@@ -232,7 +393,7 @@ else
         $('#modalForm').modal('show');
     }
 
-    function medioGetById(idMedio) {
+    function medioGetById(idMedio) {    
         $.ajax({
             url: '@Url.Action("MedioGetById")',
             type: 'POST',
@@ -251,7 +412,7 @@ else
                     $("#Duracion").val(result.object.duracion);
                     $("#NumPaginas").val(result.object.numPaginas);
                     $("#Idioma").val(result.object.idioma);
-                    $("#ImagenB64").val(result.object.imagenB64);
+                    $("#Imagen").val(result.object.imagen);
 
 
                     if (result.object.imagen == null) {
@@ -269,61 +430,99 @@ else
     }
 
 
-    // async function dependientesGetAllByNumeroEmpleado() {
-
-    //     let NumeroEmpleado = '@ViewBag.NumeroEmpleado';
-
-    //     $('#tablaDependientes tbody').html(`
-    //                 <tr>
-    //                     <td colspan="7">
-    //                         <div class="d-flex align-items-center">
-    //                             <strong class="text-primary"> Loading...</strong >
-    //                             <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
-    //                         </div>
-    //                     </td>
-    //                 </tr>
-    //                 `);
+    function MedioGetAll() {
 
 
-    //     $.ajax({
-    //         url: '@Url.Action("DependientesGetAllByNumeroEmpleado")',
-    //         type: 'POST',
-    //         dataType: 'json',
-    //         data: { NumeroEmpleado },
-    //         success: function (result) {
 
-    //             $('#tablaDependientes tbody').empty();
+        $('#tableMedios tbody').html(`
+                            <tr>
+                                <td colspan="7">
+                                    <div class="d-flex align-items-center">
+                                        <strong class="text-primary"> Loading...</strong >
+                                        <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
+                                    </div>
+                                </td>
+                            </tr>
+            `);
 
-    //             $.each(result.objects, function (i, dependiente) {
-    //                 let filas = `
-    //                                 <tr>
-    //                                     <td class="text-center">
-    //                                         <button class="btn btn-warning" onclick="openModal(${dependiente.idDependiente})">Editar</button>
-    //                                     </td>
-    //                                     <td> ${dependiente.nombre} ${dependiente.apellidoPaterno} ${dependiente.apellidoMaterno}</td>
-    //                                     <td>apellidoPaterno</td>
-    //                                     <td>${dependiente.fechaNacimiento}</td>
-    //                                     <td>${dependiente.estadoCivil}</td>
-    //                                     <td>${dependiente.genero}</td>
-    //                                     <td>${dependiente.telefono}</td>
-    //                                     <td>${dependiente.dependienteTipo.nombre}</td>
-    //                                     <td class="text-center">
-    //                                             <button class="btn btn-danger">Eliminar</button>
-    //                                     </td>
-    //                                 </tr>
-    //                     `;
 
-    //                 $('#tablaDependientes tbody').append(filas);
-    //             });
 
-    //         },
-    //         error: function (result) {
 
-    //             alert('Error.' + result.message);
-    //         }
+        $.ajax({
+            url: '@Url.Action("MedioGetAll")',
+            type: 'POST',
+            success: function (result) {
 
-    //     });
-    // }
+                $('#tableMedios tbody').empty();
+
+                $.each(result.objects, function (i, medio) {
+
+
+                    const cloneTpRow = tpRow.content.cloneNode(true);
+
+                    cloneTpRow.querySelector(".IdMedio").textContent = medio.idMedio;
+
+                    cloneTpRow.querySelector("#editar").addEventListener("click", () => {
+                        openModal(medio.idMedio);
+                    });
+
+                    cloneTpRow.querySelector(".Titulo").textContent = medio.titulo;
+
+                    if(medio.imagen == null){
+
+                        cloneTpRow.querySelector(".Imagen img").src = "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg";
+                    }else{
+                        cloneTpRow.querySelector(".Imagen img").src = "data:image/png;base64," + medio.imagen;
+                    }
+
+                    cloneTpRow.querySelector(".Autor").textContent = `${medio.autor.nombre} ${medio.autor.apellidoPaterno} ${medio.autor.apellidoMaterno}`;
+
+                    cloneTpRow.querySelector(".Titulo").textContent = medio.titulo;
+
+                    cloneTpRow.querySelector(".Editorial").textContent = medio.editorial.nombreEdit;
+
+                    cloneTpRow.querySelector(".Lanzamiento").textContent = medio.añolanzamiento;
+
+                    if(medio.duracion == null){
+
+                        cloneTpRow.querySelector(".DurPag").textContent = medio.duracion + " min";
+
+                    }else{
+
+                        cloneTpRow.querySelector(".DurPag").textContent = medio.numPaginas + " paginas";
+
+                    }
+
+
+                    cloneTpRow.querySelector(".Idioma").textContent = medio.titulo;
+
+                    cloneTpRow.querySelector(".Genero").textContent = medio.titulo;
+
+
+                    // cloneTpRow.querySelector("#eliminar").addEventListener("click", () => {
+                    //     MedioDelete(medio.idMedio);
+                    // });
+
+
+                    fgTpRow.appendChild(cloneTpRow);
+
+                });
+
+                tableMedios.appendChild(fgTpRow);
+
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+
+
+
+
+
+
+    }
 
 
 
@@ -347,14 +546,11 @@ else
         let Duracion = $("#Duracion").val();
         let NumPaginas = $("#NumPaginas").val();
         let Idioma = $("#Idioma").val();
-        let Imagen = $("#Imagen").val();
-        let ImagenB64 = $("#ImagenB64").val();
-
-
-
-
-
-        var Medio = {
+        let Imagen = "";
+        
+        let fuImagen = document.getElementById("fuImagen").files[0];
+        
+        var medio = {
             "idMedio": IdMedio,
             "titulo": Titulo,
             "añoLanzamiento": ALanzamiento,
@@ -373,22 +569,45 @@ else
                 "idIdioma": Idioma
             },
             "imagen": Imagen,
-            "imagenB64": URL.createObjectURL($("#Imagen").files[0]),
             "medios": [
+                "string"
+            ]
+        }
+
+        const FormAddAndUpdate = document.getElementById("FormAddAndUpdate");
+        const fdata = new FormData();
+        fdata.append("fuImagen", fuImagen);
+        fdata.append("Medio", medio);
+        fdata.append("Id", 2);
+
+
+        var Editorial = {
+            "idEditorial": 2,
+            "nombreEdit": "dfsdfdsfds",
+            "editoriales": [
                 "string"
             ]
         }
 
 
 
+
+
+
+
+
         if ($("#IdMedio").val().trim() == '') {
+       
+            const medioe = 2;
 
             // AGREGA
             $.ajax({
-                url: '@Url.Action("MedioAdd")',
+                url: '@Url.Action("AddMedio")',
+                data:  Editorial ,
+                processData: false,
+                contentType: false,
                 type: 'POST',
                 dataType: 'json',
-                data: { Medio },
                 success: function (result) {
 
                     $('#saveChanges').html('Guardar');
@@ -480,4 +699,3 @@ else
 
 
 </script>
- *@
