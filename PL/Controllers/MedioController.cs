@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Server;
 
 namespace PL.Controllers
 {
@@ -131,6 +132,13 @@ namespace PL.Controllers
 
             return Json(result);
         }  
+
+        public JsonResult TipoMedioGetAll()
+        {
+            ML. Result result = BL.TipoMedio.GetAll();  
+
+            return Json(result);
+        }  
         
         
         
@@ -141,21 +149,44 @@ namespace PL.Controllers
             return Json(result);
         }
 
-        
-        public JsonResult AddMedio(ML.Editorial editorial)
+
+        [HttpPost]
+        public JsonResult AddMedio(ML.MedioF medioF)
         {
             
-            //if (Request.Form.Files.Count > 0)
-            //{
-            //    IFormFile image = Request.Form.Files[0];
-               
-            //}
+            ML.Medio medio = new ML.Medio();
 
-           
+            medio.IdMedio = medioF.IdMedio;
+            medio.Titulo = medioF.Titulo;
+            medio.Descripcion = medioF.Descripcion;
+            medio.TipoMedio.IdTipoMedio = medioF.TipoMedio;
+            medio.Editorial.IdEditorial = medioF.Editorial;
+            medio.AñoLanzamiento = medioF.AñoLanzamiento;
+            medio.Duracion = medioF.Duracion == "" ? null : medioF.Duracion;
+            medio.NumPaginas = medioF.NumPaginas == 0 ? null : medioF.NumPaginas;
+            medio.Genero.IdGenero = medioF.Genero;
+            medio.Idioma.IdIdioma = medioF.Idioma;
+            medio.Autor.IdAutor = medioF.Autor;
+            medio.Imagen = medioF.Imagen == "" ? null : medioF.Imagen;
 
-            //ML. Result result = BL.Medio.Add(medio);      
 
-            return Json("");
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile image = Request.Form.Files[0];
+
+                if (image != null)
+                {
+                    byte[] ImagenBytes = convertFileToByteArray(image);
+                    medio.Imagen = Convert.ToBase64String(ImagenBytes);
+                }
+
+            }
+
+            
+            
+            ML. Result result = BL.Medio.Add(medio);      
+
+            return Json(result);
         }
 
 
@@ -202,11 +233,11 @@ namespace PL.Controllers
         }
 
 
-        public byte[] convertFileToByteArray(IFormFile Imagen)
+        public byte[] convertFileToByteArray(IFormFile fuImagen)
         {
 
             MemoryStream target = new MemoryStream();
-            Imagen.CopyTo(target);
+            fuImagen.CopyTo(target);
             byte[] data = target.ToArray();
 
             return data;

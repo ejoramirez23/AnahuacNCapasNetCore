@@ -122,7 +122,7 @@ else
             </div>
             <div class="modal-body">
 
-                <form id="FormAddAndUpdate" enctype="multipart/form-data">
+                <form id="FormAddAndUpdate" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col col-md-6">
 
@@ -140,7 +140,7 @@ else
                             <br>
 
                             <label>Lanzamiento</label>
-                            <input type="date" class="form-control" name="AñoLanzamiento" id="AñoLanzamiento">
+                            <input type="text" class="form-control" name="AñoLanzamiento" id="AñoLanzamiento">
 
                             <label>Genero</label>
                             <select type="text" class="form-control" name="Genero" id="Genero">
@@ -151,7 +151,12 @@ else
                             </select>
 
                             <label>Editorial</label>
-                            <select type="text" class="form-control" name="Editorial" id="Editorial">
+                            <select type="number" class="form-control" name="Editorial" id="Editorial">
+                            </select>
+
+
+                            <label>Tipo Medio</label>
+                            <select type="number" class="form-control" name="TipoMedio" id="TipoMedio">
                             </select>
 
                         </div>
@@ -169,7 +174,6 @@ else
                             <label>Idioma</label>
                             <select type="text" class="form-control" name="Idioma" id="Idioma">
                             </select>
-
 
                             <label>
                                 <input type="file" class="form-control" name="fuImagen" id="fuImagen" onchange="PreviewImagen(event)">
@@ -209,7 +213,7 @@ else
         <td class="Titulo">titulo</td>
         <td class="Imagen">
 
-            <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" /> 
+            <img src="https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg" id="medioImagen" style="width: 100px; height:100px;" />
 
 
         </td>
@@ -231,11 +235,37 @@ else
 </template>
 
 
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#AñoLanzamiento").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1910:2023',
+                maxDate: new Date()
+            });
+        });
+
+       
+    </script>
+
+    }
+
+
+
+
 <script type="text/javascript">
 
     $(document).ready(function () {
         MedioGetAll();
     });
+
+    
+     
 
     const tableMedios = document.getElementById("tableMedios");
     const tpRow = document.getElementById("tpRow");
@@ -261,8 +291,8 @@ else
 
                     $.each(result.objects, function (i, genero) {
                         let filas = `
-                                            <option value="${genero.idGenero}">${genero.nombreGenero}</option>
-                                        `;
+                                                <option value="${genero.idGenero}">${genero.nombreGenero}</option>
+                                            `;
 
                         $('#Genero').append(filas);
                     });
@@ -278,7 +308,6 @@ else
         });
     }
 
-
     function AutorGetAll() {
         $.ajax({
             url: '@Url.Action("AutorGetAll")',
@@ -293,8 +322,8 @@ else
 
                     $.each(result.objects, function (i, autor) {
                         let filas = `
-                                                    <option value="${autor.idAutor}">${autor.nombre} ${autor.apellidoPaterno} ${autor.apellidoMaterno}</option>
-                                        `;
+                                                        <option value="${autor.idAutor}">${autor.nombre} ${autor.apellidoPaterno} ${autor.apellidoMaterno}</option>
+                                            `;
 
                         $('#Autor').append(filas);
                     });
@@ -324,8 +353,8 @@ else
 
                     $.each(result.objects, function (i, editorial) {
                         let filas = `
-                                            <option value="${editorial.idEditorial}">${editorial.nombreEdit}</option>
-                                        `;
+                                                <option value="${editorial.idEditorial}">${editorial.nombreEdit}</option>
+                                            `;
 
                         $('#Editorial').append(filas);
                     });
@@ -341,6 +370,36 @@ else
         });
     }
 
+    function TipoMedioGetAll() {
+        $.ajax({
+            url: '@Url.Action("TipoMedioGetAll")',
+            type: 'POST',
+            success: function (result) {
+
+                $('#TipoMedio').html('<option value="0">Selecciona un tipo</option>');
+
+
+                if (result.correct) {
+
+
+                    $.each(result.objects, function (i, tipo) {
+                        let filas = `
+                                                    <option value="${tipo.idTipoMedio}">${tipo.nombreTM}</option>
+                                                `;
+
+                        $('#TipoMedio').append(filas);
+                    });
+
+
+
+                }
+            },
+            error: function (result) {
+
+                alert('Error.' + result.message);
+            }
+        });
+    }
 
     function IdiomaGetAll() {
         $.ajax({
@@ -351,13 +410,14 @@ else
                 $('#Idioma').html('<option value="0">Selecciona un idioma</option>');
 
 
+
                 if (result.correct) {
 
 
                     $.each(result.objects, function (i, idioma) {
                         let filas = `
-                                                <option value="${idioma.idIdioma}">${idioma.nombreIdioma}</option>
-                                            `;
+                                                    <option value="${idioma.idIdioma}">${idioma.nombreIdioma}</option>
+                                                `;
 
                         $('#Idioma').append(filas);
                     });
@@ -379,21 +439,23 @@ else
         AutorGetAll();
         EditorialGetAll();
         IdiomaGetAll();
+        TipoMedioGetAll();
+
 
 
         if (idMedio == null) {
             $("#FormAddAndUpdate").trigger("reset");
-            $("#staticBackdropLabel").text("Agregar dependiente");
+            $("#staticBackdropLabel").text("Agregar medio");
         } else {
             $("#FormAddAndUpdate").trigger("reset");
-            $("#staticBackdropLabel").text("Actualizar dependiente");
+            $("#staticBackdropLabel").text("Actualizar medio");
             medioGetById(idMedio);
         }
 
         $('#modalForm').modal('show');
     }
 
-    function medioGetById(idMedio) {    
+    function medioGetById(idMedio) {
         $.ajax({
             url: '@Url.Action("MedioGetById")',
             type: 'POST',
@@ -406,19 +468,22 @@ else
                     $("#IdMedio").val(result.object.idMedio);
                     $("#Titulo").val(result.object.titulo);
                     $("#AñoLanzamiento").val(result.object.añoLanzamiento);
+                    $("#Descripcion").val(result.object.descripcion);
                     $("#Genero").val(result.object.genero.idGenero);
+                    $("#TipoMedio").val(result.object.tipoMedio.idTipoMedio);
                     $("#Autor").val(result.object.autor.idAutor);
                     $("#Editorial").val(result.object.editorial.idEditorial);
                     $("#Duracion").val(result.object.duracion);
                     $("#NumPaginas").val(result.object.numPaginas);
-                    $("#Idioma").val(result.object.idioma);
+                    $("#Idioma").val(result.object.idioma.idIdioma);
                     $("#Imagen").val(result.object.imagen);
 
-
                     if (result.object.imagen == null) {
-                        $("#medioImagenPreview").src = "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg";
+                        $("#medioImagenPreview").attr("src", "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg");
                     } else {
-                        $("#medioImagenPreview").src = "data:image/png;base64," + btoa(result.object.imagen);
+                    
+                        $("#medioImagenPreview").attr("src", `data:image/png;base64,${result.object.imagen}`);
+
                     }
                 }
             },
@@ -429,21 +494,20 @@ else
         });
     }
 
-
     function MedioGetAll() {
 
 
 
         $('#tableMedios tbody').html(`
-                            <tr>
-                                <td colspan="7">
-                                    <div class="d-flex align-items-center">
-                                        <strong class="text-primary"> Loading...</strong >
-                                        <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
-                                    </div>
-                                </td>
-                            </tr>
-            `);
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="d-flex align-items-center">
+                                            <strong class="text-primary"> Loading...</strong >
+                                            <div class="spinner-border text-primary ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                `);
 
 
 
@@ -468,10 +532,10 @@ else
 
                     cloneTpRow.querySelector(".Titulo").textContent = medio.titulo;
 
-                    if(medio.imagen == null){
+                    if (medio.imagen == null) {
 
                         cloneTpRow.querySelector(".Imagen img").src = "https://thumbs.dreamstime.com/b/perfil-de-usuario-vectorial-avatar-predeterminado-179376714.jpg";
-                    }else{
+                    } else {
                         cloneTpRow.querySelector(".Imagen img").src = "data:image/png;base64," + medio.imagen;
                     }
 
@@ -483,11 +547,11 @@ else
 
                     cloneTpRow.querySelector(".Lanzamiento").textContent = medio.añolanzamiento;
 
-                    if(medio.duracion == null){
+                    if (medio.duracion == null) {
 
                         cloneTpRow.querySelector(".DurPag").textContent = medio.duracion + " min";
 
-                    }else{
+                    } else {
 
                         cloneTpRow.querySelector(".DurPag").textContent = medio.numPaginas + " paginas";
 
@@ -531,107 +595,198 @@ else
     });
 
 
+    async function Validar(){
 
-    function saveChanges() {
+        const campos = {
+            titulo: {
+                        val: false,
+                        id: "Titulo"
+                    },
+            lanzamiento : false,
+            descripcion : false,
+            genero : false,
+            tipoMedio : false,
+            autor : false,
+            editorial : false,
+            duracion : false,
+            numPaginas : false,
+            idioma : false
+        }
+
+
+        const regex = {
+            OnlyLettersAndNumbers: /^[A-Za-z0-9]$/,
+            OnlyLettersAndSpaces: /^[a-zA-Z\s]*$/,
+            OnlyLetters: /^[a-zA-Z]$/,
+            OnlyEmail: /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|.(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            OnlyPass: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@@!%&*?])[A-Za-z\d#$@@!%&*?]{8,30}$/
+        }
+
+
+
+
+        $("#IdMedio").val();
+        $("#Titulo").val();
+        $("#AñoLanzamiento").val();
+        $("#Descripcion").val();
+        $("#Genero").val();
+        $("#TipoMedio").val();
+        $("#Autor").val();
+        $("#Editorial").val();
+        $("#Duracion").val();
+        $("#NumPaginas").val();
+        $("#Idioma").val();
+        $("#Imagen").val();
+
+
+
+
+    }
+
+
+    async function saveChanges() {
 
         $('#saveChanges').html('<div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>');
 
 
-        let IdMedio = $("#IdMedio").val();
-        let Titulo = $("#Titulo").val();
-        let ALanzamiento = $("#AñoLanzamiento").val();
-        let Genero = $("#Genero").val();
-        let Autor = $("#Autor").val();
-        let Editorial = $("#Editorial").val();
-        let Duracion = $("#Duracion").val();
-        let NumPaginas = $("#NumPaginas").val();
-        let Idioma = $("#Idioma").val();
-        let Imagen = "";
-        
-        let fuImagen = document.getElementById("fuImagen").files[0];
-        
-        var medio = {
-            "idMedio": IdMedio,
-            "titulo": Titulo,
-            "añoLanzamiento": ALanzamiento,
-            "genero": {
-                "idGenero": Genero
-            },
-            "autor": {
-                "idAutor": Autor
-            },
-            "editorial": {
-                "idEditorial": Editorial
-            },
-            "duracion": Duracion,
-            "numPaginas": NumPaginas,
-            "idioma": {
-                "idIdioma": Idioma
-            },
-            "imagen": Imagen,
-            "medios": [
-                "string"
-            ]
-        }
+        await Validar();
+
+
+        // let IdMedio = $("#IdMedio").val();
+        // let Titulo = $("#Titulo").val();
+        // let TipoMedio = $("#TipoMedio").val();
+        // let Editorial = $("#Editorial").val();
+        // let ALanzamiento = $("#AñoLanzamiento").val();
+        // let Duracion = $("#Duracion").val();
+        // let NumPaginas = $("#NumPaginas").val();
+        // let Genero = $("#Genero").val();
+        // let Idioma = $("#Idioma").val();
+        // let Autor = $("#Autor").val();
+        // let Imagen = "";
+
+        // let fuImagen = document.getElementById("fuImagen").files[0];
+
+        // var data = {
+
+        //     medio: {
+        //         idMedio: IdMedio,
+        //         titulo: Titulo,
+        //         tipoMedio: {
+        //             idTipoMedio: TipoMedio,
+        //             nombreTM: ""
+        //         },
+        //         editorial: {
+        //             idEditorial: Editorial,
+        //             nombreEdit: ""
+        //         },
+        //         añoLanzamiento: ALanzamiento,
+        //         duracion: Duracion,
+        //         numPaginas: NumPaginas,
+        //         genero: {
+        //             idGenero: Genero,
+        //             nombreGenero: ""
+        //         },
+        //         idioma: {
+        //             idIdioma: Idioma,
+        //             nombreIdioma: ""
+        //         },
+        //         autor: {
+        //             idAutor: Autor,
+        //             nombre: "",
+        //             apellidoPaterno: "",
+        //             apellidoMaterno: ""
+        //         },
+        //         imagen: "",
+        //         medios: [
+        //             "string"
+        //         ]
+        //     }
+
+        // }
+
+
 
         const FormAddAndUpdate = document.getElementById("FormAddAndUpdate");
-        const fdata = new FormData();
-        fdata.append("fuImagen", fuImagen);
-        fdata.append("Medio", medio);
-        fdata.append("Id", 2);
+        var fdata = new FormData(FormAddAndUpdate);
+        // fdata.append("fuImagen", fuImagen);
+        //fdata.append("medio", data.medio);
+        // fdata.append("medio", medio);
 
 
-        var Editorial = {
-            "idEditorial": 2,
-            "nombreEdit": "dfsdfdsfds",
-            "editoriales": [
-                "string"
-            ]
-        }
+        if ($("#IdMedio").val().trim().length == 0) {
 
 
-
-
-
-
-
-
-        if ($("#IdMedio").val().trim() == '') {
-       
-            const medioe = 2;
 
             // AGREGA
+            // $.ajax({
+            //     url: '@Url.Action("AddMedio")',
+            //     data:  Editorial ,
+            //     processData: false,
+            //     contentType: false,
+            //     type: 'POST',
+            //     dataType: 'json',
+            //     success: function (result) {
+
+            //         $('#saveChanges').html('Guardar');
+
+            //         if (result.correct) {
+
+            //             alert(result.correct);
+            //         } else {
+
+            //             Swal.fire({
+            //                 icon: "error",
+            //                 title: "Oops...",
+            //                 text: result.message
+            //             });
+            //         }
+
+
+            //     },
+            //     error: function (result) {
+            //         $('#saveChanges').html('Guardar');
+            //         alert('Error.' + result.message);
+            //     }
+
+            // });
+
+
+
+
             $.ajax({
+                method: 'POST',
                 url: '@Url.Action("AddMedio")',
-                data:  Editorial ,
+                data: fdata,
                 processData: false,
                 contentType: false,
-                type: 'POST',
                 dataType: 'json',
-                success: function (result) {
-
-                    $('#saveChanges').html('Guardar');
-
-                    if (result.correct) {
-
-                        alert(result.correct);
-                    } else {
-
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: result.message
-                        });
-                    }
+            }).done(function(result) {
 
 
-                },
-                error: function (result) {
-                    $('#saveChanges').html('Guardar');
-                    alert('Error.' + result.message);
+                $('#saveChanges').html('Guardar');
+
+                if (result.correct) {
+
+                    $('#modalForm').modal('hide');
+                    MedioGetAll();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 1900
+                    });
+                } else {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: result.message
+                    });
                 }
-
-            });
+            
+            })
+               
 
 
 

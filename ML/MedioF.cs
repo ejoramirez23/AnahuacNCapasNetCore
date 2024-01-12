@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace ML
 {
-    public class Medio
+    public class MedioF
     {
+
         public int IdMedio { get; set; }
 
         public string Titulo { get; set; }
 
-        public ML.TipoMedio TipoMedio { get; set; } = new ML.TipoMedio();
-        public ML.Editorial Editorial { get; set; } = new ML.Editorial();
+        public int TipoMedio { get; set; }
+        public int Editorial { get; set; }
 
         public string? AñoLanzamiento { get; set; }
         public string? Duracion { get; set; }
 
         public int? NumPaginas { get; set; }
 
-        public ML.Genero Genero { get; set; } = new ML.Genero();
+        public int Genero { get; set; } 
 
-        public ML.Idioma Idioma { get; set; } = new ML.Idioma();
+        public int Idioma { get; set; } 
 
-        public ML.Autor Autor { get; set; } = new Autor();
+        public int Autor { get; set; }
 
         public string Descripcion { get; set; }
 
         public string? Imagen { get; set; }
 
-        public List<object> Medios { get; set; }
 
     }
 }
